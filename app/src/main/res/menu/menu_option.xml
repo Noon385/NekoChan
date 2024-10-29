@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/option_Staff"
+        android:title="Nhân viên"
+        />
+    <item android:id="@+id/option_Category"
+        android:title="Loại món"
+        />
+    <item android:id="@+id/option_Product"
+        android:title="Món"
+        />
+    <item android:id="@+id/option_Customer"
+        android:title="Khách hàng"
+        />
+    <item android:id="@+id/option_Logout"
+        android:title="Đăng xuất"
+        />
+</menu>

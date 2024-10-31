@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cream"
+    android:background="@color/light_green"
     android:layout_margin="10dp"
     app:cardCornerRadius="25dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imgCategoryImage"
@@ -20,14 +21,15 @@
 
         <TextView
             android:id="@+id/txtCategoryName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/imgCategoryImage"
             android:padding="8dp"
             android:text="Tên loại"
-            android:textColor="@color/light_green"
-            android:textSize="25sp" /> <!-- Nền trong suốt tối để dễ đọc chữ -->
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textAlignment="center" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

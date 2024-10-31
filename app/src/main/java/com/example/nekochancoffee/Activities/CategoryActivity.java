@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +33,7 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCategory;
     private CategoryAdapter adapter;
     private List<Category> categoryList = new ArrayList<>();
-    private ApiService apiService = RetrofitClient.getClient("https://e4aa-115-75-32-98.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://9729-118-68-211-167.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class CategoryActivity extends AppCompatActivity {
 
 
         recyclerViewCategory.setAdapter(adapter);
-        recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewCategory.setLayoutManager(new GridLayoutManager(this,3));
 
         // Tải danh sách ban đầu
         loadCategoryList();

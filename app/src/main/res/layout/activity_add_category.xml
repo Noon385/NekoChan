@@ -13,20 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/cream"
-        app:title=""
+        app:title="Thêm loại món"
+        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/ic_back"
         tools:ignore="MissingConstraints"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thêm loại món"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textAllCaps="true"
-        android:layout_marginTop="20dp"
-        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,6 +27,16 @@
         android:layout_marginTop="30dp"
         >
 
+
+
+        <ImageView
+            android:id="@+id/img_addcategory_image"
+            android:layout_width="185dp"
+            android:layout_height="165dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_addimage" />
         <com.google.android.material.textfield.TextInputLayout
 
             android:layout_width="match_parent"
@@ -58,15 +60,6 @@
                 android:inputType="text"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/img_addcategory_image"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_addimage" />
 
         <Button
             android:id="@+id/btn_addcategory"

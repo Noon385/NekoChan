@@ -13,21 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/cream"
-        app:title=""
+        app:title="Thêm mèo"
+        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/ic_back"
         tools:ignore="MissingConstraints"
         />
-    <TextView
-        android:id="@+id/txt_addmenu_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="THÊM MÈO"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textAllCaps="true"
-        android:layout_marginTop="15dp"
-        />
+
 
     <LinearLayout
         android:layout_width="match_parent"

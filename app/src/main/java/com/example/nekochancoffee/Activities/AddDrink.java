@@ -43,7 +43,7 @@ public class AddDrink extends AppCompatActivity {
     private Button btnAddDrink;
     private ImageView imgDrink;
     private Spinner spinner;
-    private ApiService apiService = RetrofitClient.getClient("https://e4aa-115-75-32-98.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://9729-118-68-211-167.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

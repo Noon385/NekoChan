@@ -17,6 +17,18 @@
         android:theme="@style/Theme.NekochanCoffee"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.TableDetail"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditTable"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.AddTable"
+            android:exported="false" />
+        <activity
             android:name=".Activities.UserDetail"
             android:exported="false" />
         <activity

@@ -48,7 +48,7 @@ public class EditDrink extends AppCompatActivity {
     private Spinner spinner;
     private Drink drink;
     private int drinkId;
-    private ApiService apiService = RetrofitClient.getClient("https://9729-118-68-211-167.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

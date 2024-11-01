@@ -6,6 +6,7 @@ import com.example.nekochancoffee.Model.Category;
 import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.LoginResponse;
+import com.example.nekochancoffee.Model.Table;
 import com.example.nekochancoffee.Model.User;
 
 
@@ -151,12 +152,13 @@ public interface ApiService {
     Call<Category> getCategoryById(@Path("id") int id);
 
 
-    //lấy thông tin món///////////////////////////////////////////////////////////////////////
+    //lấy thông tin món theo id///////////////////////////////////////////////////////////////////////
     @GET("drinks/{id}")
     Call<Drink> getDrinkById(@Path("id") int id);
+    // lấy thông tin món
     @GET("drinks")
     Call<List<Drink>> getDrink();
-    // Thêm phương thức lấy đồ uống theo category_id
+    //lấy danh sách món theo danh  mục
     @GET("drinks/category/{categoryId}")
     Call<List<Drink>> getDrinksByCategoryId(@Path("categoryId") int categoryId);
 
@@ -185,6 +187,22 @@ public interface ApiService {
 
 
 
+    //Lấy thông tin bàn /////////////////////////////////////////////
+    @GET("tables")
+    Call<List<Table>> getTable();
+    //lấy thông tin bàn theo id
+    @GET("tables/{id}")
+    Call<Table> getTableById(@Path("id") int tableId);
+
+    //xóa bàn
+    @DELETE("tables/{tableId}")
+    Call<Void> deleteTable(@Path("tableId") int tableId);
+    //Thêm bàn
+    @POST("tables")
+    Call<Void> addTable( @Body Table table);
+    //Sửa bàn
+    @PUT("tables/{table_id}")
+    Call<Void> updateTable(@Path("table_id") int tableId, @Body Table table);
 }
 
 

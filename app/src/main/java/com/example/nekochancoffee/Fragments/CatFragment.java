@@ -35,7 +35,7 @@ public class CatFragment extends Fragment {
     FloatingActionButton btnAddcat;
     private CatAdapter catAdapter;
     private List<Cat> catList;
-    ApiService apiService  = RetrofitClient.getClient("https://9729-118-68-211-167.ngrok-free.app/ ").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://d95a-1-53-113-156.ngrok-free.app/ ").create(ApiService.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

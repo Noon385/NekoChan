@@ -1,10 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/light_green"
     android:padding="10dp"
-    android:layout_marginBottom="20dp">
+    android:layout_margin="15dp"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="25dp">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/light_green"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
+        <TextView
+            android:id="@+id/txtTableName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên bàn"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/imgTable"
+            android:layout_width="140dp"
+            android:layout_height="120dp"
+            android:src="@drawable/t"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgOrder"
+                android:layout_width="35dp"
+                android:layout_height="34dp"
+                android:src="@drawable/payment_icon"
+
+                android:padding="5dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imgPayment"
+                android:layout_width="35dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_money"
+                android:padding="5dp"
+                android:layout_marginStart="12dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imgDetail"
+                android:layout_width="35dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_info"
+                android:padding="5dp"
+                android:layout_marginStart="12dp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

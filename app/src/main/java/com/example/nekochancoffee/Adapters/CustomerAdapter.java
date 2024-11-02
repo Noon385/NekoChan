@@ -16,8 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nekochancoffee.Activities.CustomerDetail;
 import com.example.nekochancoffee.Activities.EditCustomer;
 import com.example.nekochancoffee.Activities.EditUser;
+import com.example.nekochancoffee.Activities.UserDetail;
 import com.example.nekochancoffee.ApiService;
 import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.R;
@@ -50,13 +52,21 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     @Override
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
         Customer customer = customerList.get(position);
-        holder.tvName.setText(customer.getCustomer_name());
-        holder.tvPhone.setText(customer.getCustomer_phone());
-        holder.tvPoint.setText(String.valueOf(customer.getCustomer_point()));
+        holder.tvName.setText("Họ và tên: " + customer.getCustomer_name());
+        holder.tvPhone.setText("Số điện thoại: " + customer.getCustomer_phone());
+        holder.tvPoint.setText("Điểm số: " + String.valueOf(customer.getCustomer_point()));
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CustomerDetail.class);
+            intent.putExtra("customer", customer);
+            context.startActivity(intent);
+        });
 
-        // Nút more
-        holder.btnMore.setOnClickListener(v -> showPopupMenu(holder.btnMore, position, customer));
+        holder.itemView.setOnLongClickListener(v -> {
+            showPopupMenu(holder.itemView, position, customer);
+            return true;
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -72,7 +82,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             tvName = itemView.findViewById(R.id.txtName);
             tvPhone = itemView.findViewById(R.id.txtPhone);
             tvPoint = itemView.findViewById(R.id.txtPoint);
-            btnMore = itemView.findViewById(R.id.btnMore);
+//            btnMore = itemView.findViewById(R.id.btnMore);
         }
     }
 
@@ -80,7 +90,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     private void showPopupMenu(View view, int position, Customer customer) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.menu_customer_action, popupMenu.getMenu());
+        inflater.inflate(R.menu.menu_cat_action_delete_edit, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
 
@@ -91,9 +101,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 Intent intent = new Intent(context, EditCustomer.class);
                 intent.putExtra("customer",customer);
                 context.startActivity(intent);
-                return true;
-            } else if (id == R.id.action_cat) {
-                viewCustomerCats(customer);
                 return true;
             } else {
                 return false;

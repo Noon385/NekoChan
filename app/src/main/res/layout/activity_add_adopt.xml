@@ -5,28 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/cream"
-    android:padding="16dp">
+   >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_addadopt"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/cream"
-        app:title=""
+        app:title="Thêm thông tin nhận nuôi"
+        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/ic_back"
         tools:ignore="MissingConstraints"
         />
 
     <!-- TextView cho tiêu đề -->
-    <TextView
-        android:id="@+id/tvAdoptTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thêm thông tin nhận nuôi"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:paddingBottom="16dp"/>
+
 
     <!-- Spinner chọn mèo -->
     <TextView

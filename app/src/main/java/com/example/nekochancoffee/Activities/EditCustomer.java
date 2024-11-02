@@ -26,7 +26,7 @@ public class EditCustomer extends AppCompatActivity {
 
     private Customer customer;
     private CustomerAdapter adapter;
-    ApiService apiService  = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://1988-118-69-116-208.ngrok-free.app/").create(ApiService.class);
 
     @SuppressLint("MissingInflatedId")
     @Override

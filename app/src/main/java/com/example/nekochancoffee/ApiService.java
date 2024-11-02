@@ -102,6 +102,8 @@ public interface ApiService {
     // Lấy danh sách adopt
     @GET("adopts")
     Call<List<Adopt>> getAdopts();
+    @GET("adopts/customer/{customer_id}")
+    Call<List<Adopt>> getAdoptByCustomerId(@Path("customer_id") int customerId);
 
     // Thêm mới adopt
     @FormUrlEncoded

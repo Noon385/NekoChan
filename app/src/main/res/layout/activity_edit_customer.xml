@@ -6,9 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.AddUser"
     android:background="@color/cream"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+
 
     android:id="@+id/AddCustomer"
     >
@@ -24,6 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/cream"
             app:title="Sửa thông tin khách hàng"
+            app:titleTextColor="@color/black"
             app:navigationIcon="@drawable/ic_back"
             tools:ignore="MissingConstraints"
             />

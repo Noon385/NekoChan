@@ -40,7 +40,7 @@ public class AddCat extends AppCompatActivity {
     Button btnAddCat;
     ImageView imgCat;
     Uri imageUri;
-    ApiService apiService = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://1988-118-69-116-208.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

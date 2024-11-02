@@ -22,7 +22,7 @@ public class AddTable extends AppCompatActivity {
 
     private TextInputEditText txtTableName;
     private Button btnAddTable;
-    private ApiService apiService = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1988-118-69-116-208.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

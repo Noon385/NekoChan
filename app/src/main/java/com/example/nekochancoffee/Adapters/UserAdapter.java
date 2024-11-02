@@ -3,6 +3,7 @@ package com.example.nekochancoffee.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nekochancoffee.Activities.EditUser;
+import com.example.nekochancoffee.Activities.UserDetail;
 import com.example.nekochancoffee.ApiService;
+import com.example.nekochancoffee.Model.Cat;
 import com.example.nekochancoffee.Model.User;
 import com.example.nekochancoffee.R;
 
@@ -28,12 +32,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private List<User> userList;
     private Context context;
     private ApiService userApi;
+    private  OnUserActionListener listener;
 
-    public UserAdapter(List<User> userList, Context context, ApiService userApi) {
+    public UserAdapter(List<User> userList, Context context, ApiService userApi, OnUserActionListener listener) {
         this.userList = userList;
         this.context = context;
         this.userApi = userApi;
+        this.listener = listener;
     }
+
 
     @NonNull
     @Override
@@ -45,22 +52,61 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.tvUsername.setText(user.getUsername());
-        holder.tvRole.setText(user.getRole());
-
-        // Nút xóa người dùng
-        holder.btnDelete.setOnClickListener(v -> {
-            deleteUser(user.getId(), position);
-            Toast.makeText(context, "ID là: " +user.getId(), Toast.LENGTH_SHORT).show();
-        });
-
-        // Nút cập nhật thông tin người dùng
-        holder.btnUpdate.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EditUser.class);
-            intent.putExtra("user",user);
+        holder.tvUsername.setText("Tên đăng nhập: "+user.getUsername());
+        holder.tvRole.setText("Chức vụ: "+user.getRole());
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UserDetail.class);
+            intent.putExtra("user", user); // Assuming User class implements Serializable or Parcelable
             context.startActivity(intent);
-//            updateUser(user);
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, holder.itemView);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_cat_action_delete_edit, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.action_edit) {
+                            // Xử lý sửa mèo
+                            if (listener != null) {
+                                listener.onEditUser(user);
+                            }
+                            return true;
+
+                        } else if (item.getItemId() == R.id.action_delete) {
+                            // Xử lý xóa mèo
+                            if (listener != null) {
+                                listener.onDeleteUser(user);
+                            }
+                            return true;
+
+                        } else {
+                            return false;
+                        }
+
+                    }
+                });
+                popupMenu.show();
+                return true;
+            }
+        });
+
+//        // Nút xóa người dùng
+//        holder.btnDelete.setOnClickListener(v -> {
+//            deleteUser(user.getId(), position);
+//            Toast.makeText(context, "ID là: " +user.getId(), Toast.LENGTH_SHORT).show();
+//        });
+//
+//        // Nút cập nhật thông tin người dùng
+//        holder.btnUpdate.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, EditUser.class);
+//            intent.putExtra("user",user);
+//            context.startActivity(intent);
+////            updateUser(user);
+//        });
     }
 
     @Override
@@ -70,14 +116,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername, tvRole;
-        Button btnDelete, btnUpdate;
+//        Button btnDelete, btnUpdate;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.txtUsername);
             tvRole = itemView.findViewById(R.id.txtRole);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
-            btnUpdate = itemView.findViewById(R.id.btnUpdate);
+//            btnDelete = itemView.findViewById(R.id.btnDelete);
+//            btnUpdate = itemView.findViewById(R.id.btnUpdate);
         }
     }
 
@@ -99,23 +145,23 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         });
     }
 
-//    // Cập nhật thông tin người dùng
-//    public void updateUser(User user) {
-//        userApi.updateUser(user.getId(), user).enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if (response.isSuccessful()) {
-//                    notifyDataSetChanged();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                // Xử lý khi yêu cầu thất bại
-//            }
-//        });
-//    }
+    // Cập nhật thông tin người dùng
+    public void updateUser(User user) {
+        userApi.updateUser(user.getId(), user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                // Xử lý khi yêu cầu thất bại
+            }
+        });
+    }
 
     // Xóa người dùng
     public void deleteUser(int userId, int position) {
@@ -140,6 +186,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 Toast.makeText(context, "Lỗi khi xóa người dùng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public interface OnUserActionListener {
+        void onDeleteUser(User user);
+        void onEditUser(User user);
     }
 
 }

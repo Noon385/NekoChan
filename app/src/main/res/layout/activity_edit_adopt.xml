@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/cream"
-    android:padding="16dp">
+>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_editadopt"
         android:layout_width="match_parent"

@@ -14,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nekochancoffee.Activities.AdoptDetail;
 import com.example.nekochancoffee.Activities.EditAdopt;
 import com.example.nekochancoffee.Activities.EditUser;
 import com.example.nekochancoffee.ApiService;
@@ -52,8 +54,6 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
     public void onBindViewHolder(@NonNull AdoptViewHolder holder, int position) {
         Adopt adopt = adoptList.get(position);
 
-        // Load cat image using Picasso
-
         if (adopt.getCat_image() != null && !adopt.getCat_image().isEmpty()) {
             // Chuyển đổi base64 thành Bitmap
             Bitmap bitmap = decodeBase64(adopt.getCat_image());
@@ -70,19 +70,48 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
         holder.txtCustomerName.setText("Owner: " + adopt.getCustomer_name());
         holder.txtAdoptTime.setText("Adopted on: " + adopt.getAdopt_time());
 
-        holder.btnDelete.setOnClickListener(v -> {
-            deleteAdopt(adopt.getAdopt_id(),position);
-
-        });
-        holder.btnUpdate.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EditAdopt.class);
-            intent.putExtra("adopt",adopt);
+        holder.itemView.setOnClickListener(v -> {
+            // Mở chi tiết thông tin về nhận nuôi
+            Intent intent = new Intent(context, AdoptDetail.class);
+            intent.putExtra("adopt", adopt);
             context.startActivity(intent);
         });
+        holder.itemView.setOnLongClickListener(v -> {
+            showPopupMenu(holder.itemView, position, adopt);
+            return true;
+        });
+
+//        holder.btnDelete.setOnClickListener(v -> {
+//            deleteAdopt(adopt.getAdopt_id(),position);
+//
+//        });
+//        holder.btnUpdate.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, EditAdopt.class);
+//            intent.putExtra("adopt",adopt);
+//            context.startActivity(intent);
+//        });
+    }
+    private void showPopupMenu(View view, int position, Adopt adopt) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_cat_action_delete_edit, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_delete) {
+                deleteAdopt(adopt.getAdopt_id(), position);
+                return true;
+            } else if (id == R.id.action_edit) {
+                Intent intent = new Intent(context, EditAdopt.class);
+                intent.putExtra("adopt", adopt);
+                context.startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     }
 
     public void deleteAdopt(int adoptId, int position) {
-        // Gọi API để xóa
+
         apiService.deleteAdopt(adoptId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -117,7 +146,7 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
     public static class AdoptViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCat;
         TextView txtCatName, txtCatStatus, txtCustomerName, txtAdoptTime;
-        Button btnUpdate,btnDelete;
+//        Button btnUpdate,btnDelete;
 
         public AdoptViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -127,8 +156,8 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
             txtCatStatus = itemView.findViewById(R.id.txtCatStatus);
             txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
             txtAdoptTime = itemView.findViewById(R.id.txtTime);
-            btnUpdate = itemView.findViewById(R.id.btnUpdate);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
+//            btnUpdate = itemView.findViewById(R.id.btnUpdate);
+//            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
     }
 }

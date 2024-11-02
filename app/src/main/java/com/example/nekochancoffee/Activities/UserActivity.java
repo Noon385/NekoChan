@@ -25,14 +25,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements UserAdapter.OnUserActionListener {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<User> userList;
-//    private ApiService userApi;
     private FloatingActionButton fabAddUser;
-    ApiService apiService  = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1988-118-69-116-208.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,49 +41,54 @@ public class UserActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewUsers);
         fabAddUser = findViewById(R.id.fabAddUser);
 
-
-//        apiService = RetrofitClient.getClient("https://e8da-58-186-28-106.ngrok-free.app/").create(ApiService.class);
-
-        // Cấu hình RecyclerView
+        // Configure RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Gọi API để lấy danh sách người dùng
+        // Fetch user list from the API
         getAllUsers();
 
-        // Nút thêm người dùng
+        // Add user button
         fabAddUser.setOnClickListener(v -> {
-            // Điều hướng đến Activity thêm người dùng (nếu có)
-            startActivity(new Intent(UserActivity.this,AddUser.class));
+            startActivity(new Intent(UserActivity.this, AddUser.class));
         });
 
+        // Set up toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-    // Hàm lấy danh sách người dùng từ API
+
     private void getAllUsers() {
         apiService.getAllUsers().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     userList = response.body();
-                    // Gán danh sách người dùng vào adapter và hiển thị lên RecyclerView
-                    userAdapter = new UserAdapter(userList, UserActivity.this, apiService);
+                    userAdapter = new UserAdapter(userList, UserActivity.this, apiService, UserActivity.this);
                     recyclerView.setAdapter(userAdapter);
-
                 }
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                // Xử lý lỗi khi không lấy được dữ liệu
+                // Handle failure to retrieve data
             }
         });
+    }
+
+    @Override
+    public void onEditUser(User user) {
+        Intent intent = new Intent(this, EditUser.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteUser(User user) {
+        int position = userList.indexOf(user);
+        if (position != -1) {
+            userAdapter.deleteUser(user.getId(), position);
+        }
     }
 }

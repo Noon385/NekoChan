@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cream"
+    android:orientation="vertical"
+    tools:context=".Activities.CustomerDetail">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_customer_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cream"
+        app:title="Chi tiết khách hàng"
+        app:titleTextColor="@color/black"
+        app:navigationIcon="@drawable/ic_back"
+        tools:ignore="MissingConstraints"
+        />
+
+
+    <ImageView
+        android:id="@+id/imgCustomer"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@drawable/t" />
+
+
+    <TextView
+        android:id="@+id/txName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Họ và tên"
+        android:textColor="@color/black"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+         />
+
+    <TextView
+        android:id="@+id/txtPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:text="Số điện thoại"
+     />
+
+
+    <TextView
+        android:id="@+id/txtPoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:text="Điểm số" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#A1EBF4"
+        android:padding="20dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách mèo đã nhận nuôi"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textAllCaps="true"
+                android:layout_centerVertical="true"
+                />
+
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAdopt"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:clipToPadding="false"
+
+            android:scrollbars="horizontal"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#DBE38F"
+        android:padding="20dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách hóa đơn"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textAllCaps="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewOrder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

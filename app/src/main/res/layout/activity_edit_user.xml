@@ -6,9 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.AddUser"
     android:background="@color/cream"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+
     android:transitionName="transition_signup"
     android:id="@+id/EditUser"
     >

@@ -22,14 +22,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddUser extends AppCompatActivity {
+public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActionListener {
 
     private TextInputEditText txtUsername, txtPassword;
     private RadioButton rdManager, rdStaff;
     private Button btnAddUser;
     private UserAdapter adapter;
-    private List<User> userList = new ArrayList<>(); // Danh sách người dùng
-    ApiService apiService = RetrofitClient.getClient("https://dbd8-1-53-113-145.ngrok-free.app/").create(ApiService.class);
+    private List<User> userList = new ArrayList<>();
+    private ApiService apiService = RetrofitClient.getClient("https://1988-118-69-116-208.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,57 +44,69 @@ public class AddUser extends AppCompatActivity {
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_adduser);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-        // Khởi tạo adapter với danh sách người dùng và API
+        // Initialize the adapter with an empty user list and ApiService
+        adapter = new UserAdapter(userList, this, apiService, this);
 
-        adapter = new UserAdapter(userList, this, apiService);
-
-        btnAddUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addUser();
-            }
-        });
+        btnAddUser.setOnClickListener(v -> addUser());
     }
 
     private void addUser() {
         String username = txtUsername.getText().toString().trim();
         String password = txtPassword.getText().toString().trim();
 
-        // Kiểm tra xem người dùng đã chọn quyền hay chưa
+        // Check if the role is selected
         String role;
         if (rdManager.isChecked()) {
-            role = "manager"; // Quyền quản lý
+            role = "manager";
         } else if (rdStaff.isChecked()) {
-            role = "staff"; // Quyền nhân viên
+            role = "staff";
         } else {
             Toast.makeText(this, "Vui lòng chọn quyền cho người dùng!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Kiểm tra xem username và password có trống hay không
+        // Check if username and password are not empty
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Tạo đối tượng User
+        // Create a new User object
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setRole(role);
 
-        // Gọi hàm thêm người dùng từ adapter
-        adapter.addUser(newUser);
-        adapter.notifyDataSetChanged();
+        // Use ApiService to add a new user
+        apiService.addUser(newUser).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userList.add(response.body());
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(AddUser.this, "Người dùng đã được thêm thành công!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(AddUser.this, "Thêm người dùng không thành công!", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        // Đóng activity sau khi thêm người dùng
-       finish(); // Quay về màn hình trước
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(AddUser.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onEditUser(User user) {
+        // No action needed for adding users
+    }
+
+    @Override
+    public void onDeleteUser(User user) {
+        // No action needed for adding users
     }
 }

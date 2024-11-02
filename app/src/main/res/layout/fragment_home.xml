@@ -54,14 +54,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thực đơn loại"
+                    android:text="Danh mục món"
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textAllCaps="true"
                     android:layout_centerVertical="true"
                     />
                 <TextView
-                    android:id="@+id/txt_displayhome_ViewAllCategory"
+                    android:id="@+id/txtCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Xem tất cả >"
@@ -75,10 +75,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCategory"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
-
-
+                android:scrollbars="horizontal"
                 />
         </LinearLayout>
 
@@ -113,7 +112,7 @@
                     android:layout_centerVertical="true"
                     />
                 <TextView
-                    android:id="@+id/txt_displayhome_ViewAllStatistic"
+                    android:id="@+id/txtOrder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Xem tất cả >"

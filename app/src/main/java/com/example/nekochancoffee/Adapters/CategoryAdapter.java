@@ -33,6 +33,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.categoryList = categoryList;
         this.listener = listener; // Khởi tạo listener
     }
+    public CategoryAdapter(Context context, List<Category> categoryList) {
+        this.context = context;
+        this.categoryList = categoryList;
+
+    }
 
     // ViewHolder class to hold individual category items
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {

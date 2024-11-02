@@ -1,66 +1,99 @@
 package com.example.nekochancoffee.Fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.nekochancoffee.Activities.AddCat;
+import com.example.nekochancoffee.Activities.CategoryActivity;
+import com.example.nekochancoffee.Activities.EditCat;
+import com.example.nekochancoffee.Adapters.CatAdapter;
+import com.example.nekochancoffee.Adapters.CategoryAdapter;
+import com.example.nekochancoffee.ApiService;
+import com.example.nekochancoffee.Model.Cat;
+import com.example.nekochancoffee.Model.Category;
 import com.example.nekochancoffee.R;
+import com.example.nekochancoffee.network.RetrofitClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView txtCategory,txtOrder;
+    private RecyclerView recyclerViewCategory,recyclerViewOrder;
+    private CategoryAdapter categoryAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<Category> categoryList;
+    ApiService apiService  = RetrofitClient.getClient("https://b319-2402-800-360e-5fad-bcbf-1b4b-9e52-88d8.ngrok-free.app/ ").create(ApiService.class);
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @SuppressLint("MissingInflatedId")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        recyclerViewCategory = rootView.findViewById(R.id.recyclerViewCategory);
+        recyclerViewOrder = rootView.findViewById(R.id.recyclerViewOrder);
+        txtCategory = rootView.findViewById(R.id.txtCategory);
+        txtOrder = rootView.findViewById(R.id.txtOrder);
+
+        categoryList = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+
+        txtCategory.setOnClickListener(v -> startActivity(new Intent(getContext(), CategoryActivity.class)));
+
+
+        recyclerViewCategory.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyclerViewCategory.setAdapter(categoryAdapter);
+
+        getCategory();
+
+        return rootView;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getCategory();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+    private void getCategory() {
+//        ApiService apiService = RetrofitClient.getClient("https://200f-1-52-23-183.ngrok-free.app/").create(ApiService.class);
+
+        Call<List<Category>> call = apiService.getCategory();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    categoryList.clear();
+                    categoryList.addAll(response.body());
+                    categoryAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Không thể tải danh sách loại món", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 }

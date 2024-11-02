@@ -1,6 +1,7 @@
 package com.example.nekochancoffee.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nekochancoffee.Activities.AddAdopt;
+import com.example.nekochancoffee.Activities.AddTable;
 import com.example.nekochancoffee.Model.Cat;
 import com.example.nekochancoffee.R;
 
@@ -52,6 +55,8 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
         holder.tvCatPrice.setText(cat.getCatPrice() + " VND");
 
 
+
+
         if (cat.getCatImage() != null && !cat.getCatImage().isEmpty()) {
             // Chuyển đổi base64 thành Bitmap
             Bitmap bitmap = decodeBase64(cat.getCatImage());
@@ -60,6 +65,17 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
             // Nếu không có ảnh, hiển thị hình mặc định
             holder.imgCatImage.setImageResource(R.drawable.t);
         }
+
+        if(cat.getCatStatus().toLowerCase().equals("at store")){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =new Intent(context, AddAdopt.class);
+                    context.startActivity(intent);
+                }
+            });
+        }
+
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

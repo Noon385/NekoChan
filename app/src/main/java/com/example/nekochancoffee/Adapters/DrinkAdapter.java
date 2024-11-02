@@ -1,6 +1,7 @@
 package com.example.nekochancoffee.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nekochancoffee.Model.Category;
 import com.example.nekochancoffee.Model.Drink;
+import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.R;
 import com.squareup.picasso.Picasso;
 
@@ -62,6 +64,12 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             // Nếu không có ảnh, hiển thị hình mặc định
             holder.imgDrink.setImageResource(R.drawable.t);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Order.class);
+            }
+        });
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

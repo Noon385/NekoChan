@@ -28,9 +28,6 @@ public class UserDetail extends AppCompatActivity {
         if (user != null) {
             loadUserDetails(user);
         }
-
-
-
     }
     private void loadUserDetails(User user) {
         txtUsername.setText("Tên đăng nhập: " + user.getUsername());

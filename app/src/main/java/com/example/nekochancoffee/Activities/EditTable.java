@@ -23,7 +23,7 @@ public class EditTable extends AppCompatActivity {
     private Button btnEditTable;
     private int tableId;
     private Table table;
-    private ApiService apiService = RetrofitClient.getClient("https://b319-2402-800-360e-5fad-bcbf-1b4b-9e52-88d8.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
 
 
     @Override

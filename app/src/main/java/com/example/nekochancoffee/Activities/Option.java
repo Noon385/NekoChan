@@ -45,6 +45,8 @@ public class Option extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String role = sharedPreferences.getString("role", "staff");
+        String username = sharedPreferences.getString("username","");
+        txtUsername.setText("Xin chào "+username.toString());
 
         // Kiểm tra vai trò của người dùng
         if (role.equals("manager")) {
@@ -75,7 +77,7 @@ public class Option extends AppCompatActivity {
         });
 
         cardOrder.setOnClickListener(v -> {
-            Intent intent = new Intent(Option.this, UserActivity.class);
+            Intent intent = new Intent(Option.this, OrderActivity.class);
             startActivity(intent);
         });
         cardAdopt.setOnClickListener(v -> {

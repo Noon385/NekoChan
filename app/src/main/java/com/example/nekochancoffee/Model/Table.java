@@ -49,4 +49,8 @@ public class Table implements Serializable {
     public void setTable_description(String table_description) {
         this.table_description = table_description;
     }
+    @Override
+    public String toString() {
+        return table_name; // Hiển thị tên mèo
+    }
 }

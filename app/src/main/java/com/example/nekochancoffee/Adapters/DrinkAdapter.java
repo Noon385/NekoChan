@@ -11,17 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nekochancoffee.Model.Category;
+import com.example.nekochancoffee.Activities.AddOrder;
+import com.example.nekochancoffee.Activities.OrderActivity;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -67,7 +66,9 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Order.class);
+                Intent intent = new Intent(context, OrderActivity.class);
+                intent.putExtra("drink",drink);
+                context.startActivity(intent);
             }
         });
 

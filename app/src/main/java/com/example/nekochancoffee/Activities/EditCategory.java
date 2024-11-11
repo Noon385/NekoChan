@@ -42,7 +42,7 @@ public class EditCategory extends AppCompatActivity {
     private Button btnAddCategory;
     private Uri imageUri;
     private int categoryId;
-    ApiService apiService  = RetrofitClient.getClient("https://b319-2402-800-360e-5fad-bcbf-1b4b-9e52-88d8.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -54,15 +54,18 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
         if("yes".equals(table.getTable_status())){
             holder.imgTableImage.setImageResource(R.drawable.table_seat);
         }else holder.imgTableImage.setImageResource(R.drawable.table_coffee);
+//        holder.imgTableImage.setImageResource(R.drawable.table_coffee);
 
         holder.imgOrder.setOnClickListener(v -> {
             Intent intent = new Intent(context, CategoryActivity.class);
-           // intent.putExtra("tableId", table.getTable_id());
+            intent.putExtra("tableId", table.getTable_id());
+            intent.putExtra("tableStatus","yes");
             context.startActivity(intent);
         });
         holder.imgPayment.setOnClickListener(v -> {
             Intent intent = new Intent(context, PaymentActivity.class);
             intent.putExtra("tableId", table.getTable_id());
+            intent.putExtra("tableStatus","no");
             context.startActivity(intent);
         });
         holder.imgDetail.setOnClickListener(v -> {

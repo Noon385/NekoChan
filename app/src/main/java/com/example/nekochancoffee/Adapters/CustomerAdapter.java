@@ -54,7 +54,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         Customer customer = customerList.get(position);
         holder.tvName.setText("Họ và tên: " + customer.getCustomer_name());
         holder.tvPhone.setText("Số điện thoại: " + customer.getCustomer_phone());
-        holder.tvPoint.setText("Điểm số: " + String.valueOf(customer.getCustomer_point()));
+        holder.tvPoint.setText("Điểm số: " + (customer.getCustomer_point() != null ? String.valueOf(customer.getCustomer_point()) : "0"));
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CustomerDetail.class);
             intent.putExtra("customer", customer);

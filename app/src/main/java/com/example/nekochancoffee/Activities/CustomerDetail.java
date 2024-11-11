@@ -31,7 +31,7 @@ public class CustomerDetail extends AppCompatActivity {
     private TextView txName, txtPhone, txtPoint;
     private RecyclerView recyclerViewAdopt, recyclerViewOrder;
     private AdoptAdapter adoptAdapter;
-    ApiService apiService  = RetrofitClient.getClient("https://b319-2402-800-360e-5fad-bcbf-1b4b-9e52-88d8.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +65,7 @@ public class CustomerDetail extends AppCompatActivity {
 
         txName.setText( "Họ và tên: "+customer.getCustomer_name());
         txtPhone.setText( "Số điện thoại: "+customer.getCustomer_phone());
-        txtPoint.setText( "Điểm số: "+customer.getCustomer_point());
+        txtPoint.setText("Điểm số: " + (customer.getCustomer_point() != null ? customer.getCustomer_point() : "0"));
         imgCustomer.setImageResource(R.drawable.ic_person);
     }
     private void loadAdopt(Customer customer){

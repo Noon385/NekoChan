@@ -1,11 +1,14 @@
 package com.example.nekochancoffee;
 
+import com.example.nekochancoffee.Activities.AddOrder;
 import com.example.nekochancoffee.Model.Adopt;
 import com.example.nekochancoffee.Model.Cat;
 import com.example.nekochancoffee.Model.Category;
 import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.LoginResponse;
+import com.example.nekochancoffee.Model.Order;
+import com.example.nekochancoffee.Model.OrderResponse;
 import com.example.nekochancoffee.Model.Table;
 import com.example.nekochancoffee.Model.User;
 
@@ -205,6 +208,28 @@ public interface ApiService {
     //Sửa bàn
     @PUT("tables/{table_id}")
     Call<Void> updateTable(@Path("table_id") int tableId, @Body Table table);
+    @PUT("tablestatus/{table_id}")
+    Call<Void> updateTableStatus(@Path("table_id") int tableId, @Body Table table);
+
+    //Lấy thông tin hóa đơn
+    @GET("orders")
+    Call<List<Order>> getOrders();
+    @GET("order")
+    Call<List<Order>> getOrder();
+//Thêm order
+    @POST("/addOrder")
+    Call<AddOrder.OrderResponse> addOrder(@Body Order order);
+
+    // thêm order_detail
+    @POST("/addOrderDetail")
+    Call<Order> addOrderDetail(@Body Order orderDetail);
+    //lấy thông tin món của order
+    @GET("orderdetails/{order_id}")
+    Call<List<Order>> getOrderDetailById(@Path("order_id") int order_id);
+    @DELETE("orders/{orderId}")
+    Call<Void> deleteOrder(@Path("orderId") int orderId);
+
+
 }
 
 

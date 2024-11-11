@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
     private SharedPreferences sharedPreferences;
-    ApiService apiService  = RetrofitClient.getClient("https://b319-2402-800-360e-5fad-bcbf-1b4b-9e52-88d8.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,21 +131,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String username, String password) {
-        // Gửi yêu cầu đăng nhập đến API
-        // Ví dụ dùng Retrofit để gửi request
-//       ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
         Call<LoginResponse> call = apiService.login(username, password);
-
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("LoginActivity", "Response ID: " + response.body().getId());
                     if (response.body().isSuccess()) {
                         String role = response.body().getRole();
-
-                        // Lưu vai trò vào SharedPreferences
+                        int id = response.body().getId();
+//                        Toast.makeText(LoginActivity.this, id, Toast.LENGTH_SHORT).show();
+                        // Lưu vai trò vào SharedPreference
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("role", role);
+                        editor.putString("username",username);
+                        editor.putInt("id",id);
                         editor.apply();
 
                         // Điều hướng tới màn hình chính

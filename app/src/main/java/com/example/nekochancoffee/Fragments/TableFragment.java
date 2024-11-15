@@ -34,7 +34,7 @@ public class TableFragment extends Fragment {
     private FloatingActionButton btnAddTable;
     private TableAdapter tableAdapter;
     private List<Table> tableList;
-    ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +53,6 @@ public class TableFragment extends Fragment {
                 deleteTable(table.getTable_id());
                 Toast.makeText(getContext(), "Table ID: " + table.getTable_id(), Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onEditTable(Table table) {
                 Intent intent = new Intent(getActivity(), EditTable.class);

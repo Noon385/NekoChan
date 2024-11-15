@@ -66,10 +66,14 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, OrderActivity.class);
-                intent.putExtra("drink",drink);
-                context.startActivity(intent);
+
+                    Intent intent = new Intent(context, OrderActivity.class);
+                    intent.putExtra("drink",drink);
+                    context.startActivity(intent);
+
+
             }
+
         });
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {

@@ -51,14 +51,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.txtOrderId.setText("Order ID: " + order.getOrder_id());
         holder.txtTableName.setText("Bàn số: " + order.getTable_name());
         holder.txtCustomerName.setText("Khách hàng: " + order.getCustomer_name());
-        holder.txtTotal.setText("Tổng: " + order.getTotal() + " VND");
+
+        if(order.getTotal_price() == null){
+            holder.txtTotal.setText("Tổng: 0 VND");
+        }else holder.txtTotal.setText("Tổng: " + order.getTotal_price() + " VND");
         holder.txtOrderStatus.setText("yes".equals(order.getOrder_status()) ? "Đã thanh toán" : "Chưa thanh toán");
 
 
 
         holder.itemView.setOnLongClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.itemView);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_order_action, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.menu_cat_action_delete_edit, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (listener == null) return false;
@@ -69,10 +72,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 } else if (item.getItemId() == R.id.action_delete) {
                     listener.onDeleteOrder(order);
                     return true;
-                } else if (item.getItemId() == R.id.action_detail) {
-                    listener.onDetailOrder(order);
-                    return true;
-                } else {
+                }
+//                else if (item.getItemId() == R.id.action_detail) {
+//                    listener.onDetailOrder(order);
+//                    return true;
+//                }
+                else {
                     return false;
                 }
             });
@@ -112,13 +117,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
             txtTotal = itemView.findViewById(R.id.txtTotal);
             txtOrderStatus = itemView.findViewById(R.id.txtOrderStatus);
+
         }
     }
 
     public interface OnOrderActionListener {
         void onDeleteOrder(Order order);
         void onEditOrder(Order order);
-        void onDetailOrder(Order order);
+//        void onDetailOrder(Order order);
     }
 
     public void updateOrderList(List<Order> newOrderList) {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,11 +51,13 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     public static class OrderDetailViewHolder extends RecyclerView.ViewHolder {
         TextView drinkName, amount, price;
 
+
         public OrderDetailViewHolder(View itemView) {
             super(itemView);
             drinkName = itemView.findViewById(R.id.drinkName);
             amount = itemView.findViewById(R.id.drinkAmount);
             price = itemView.findViewById(R.id.drinkPrice);
+
         }
     }
 }

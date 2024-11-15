@@ -1,5 +1,6 @@
 package com.example.nekochancoffee.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,7 +43,8 @@ public class AddOrder extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Drink drink;
     private Table table;
-    private ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
+    private final static int req =123;
+    private ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,15 @@ public class AddOrder extends AppCompatActivity {
                 imgDrink.setImageResource(R.drawable.t); // Default image
             }
         }
+        imgDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddOrder.this,CategoryActivity.class);
+                intent.putExtra("req",req);
+                startActivityForResult(intent,req);
+
+            }
+        });
 
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
@@ -98,9 +109,9 @@ public class AddOrder extends AppCompatActivity {
 
         // Set button click listener to add the order
         btnAddOrder.setOnClickListener(v -> {
-//            String catName = ((Cat) spinnerCat.getSelectedItem()).getCatName();
-//            String tableName = ((Table) spinnerTable.getSelectedItem()).getTable_name();
-//            String customerName = ((Customer) spinnerCustomer.getSelectedItem()).getCustomer_name();
+            String catName = ((Cat) spinnerCat.getSelectedItem()).getCatName();
+            String tableName = ((Table) spinnerTable.getSelectedItem()).getTable_name();
+            String customerName = ((Customer) spinnerCustomer.getSelectedItem()).getCustomer_name();
 
             int catId = ((Cat) spinnerCat.getSelectedItem()).getCatId();
             int tableId = ((Table) spinnerTable.getSelectedItem()).getTable_id();
@@ -121,17 +132,16 @@ public class AddOrder extends AppCompatActivity {
                 return;  // Return early if the input is invalid
             }
 
-            // Calculate the total
             BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
             txtTotal.setText(total.toString());
 
-            // Create Order object with all the required details
+            // order
             Order order = new Order();
             order.setTable_id(tableId);
             order.setCat_id(catId);
             order.setCustomer_id(customerId);
             order.setUser_id(userId);
-
+            // order detail
             Order orderdetail =new Order();
             orderdetail.setDrink_id(drink.getDrink_id());
             orderdetail.setAmount(amount);
@@ -142,31 +152,12 @@ public class AddOrder extends AppCompatActivity {
 //            order.setDrink_id(drink.getDrink_id());
 //            order.setAmount(amount);
 //            order.setTotal(total);
-
 //            order.setTable_name(tableName);
 //            order.setCat_name(catName);
 //            order.setCustomer_name(customerName);
 //            order.setUsername(username);
 //            order.setDrink_name(drink.getDrink_name());
 
-            // Make API call to add order
-//            apiService.addOrder(order).enqueue(new Callback<Order>() {
-//                @Override
-//                public void onResponse(Call<Order> call, Response<Order> response) {
-//                    if (response.isSuccessful()) {
-//                        int orderId =response.body().getOrder_id();
-//                        orderdetail.setOrder_id(orderId);
-//                        Toast.makeText(AddOrder.this, "Order added successfully!", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(AddOrder.this, "Failed to add order"+userId, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Order> call, Throwable t) {
-//                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
             // Make API call to add order
             apiService.addOrder(order).enqueue(new Callback<OrderResponse>() {
                 @Override
@@ -178,13 +169,15 @@ public class AddOrder extends AppCompatActivity {
                         if (orderId != 0) {
                             Toast.makeText(AddOrder.this, "Order added successfully! Order ID: " + orderId, Toast.LENGTH_SHORT).show();
 
-                            // Tiến hành thêm chi tiết đơn hàng
+//
                             orderdetail.setOrder_id(orderId);
                             apiService.addOrderDetail(orderdetail).enqueue(new Callback<Order>() {
                                 @Override
                                 public void onResponse(Call<Order> call, Response<Order> response) {
                                     if (response.isSuccessful()) {
                                         Toast.makeText(AddOrder.this, "Order detail added successfully!", Toast.LENGTH_SHORT).show();
+
+
                                     } else {
                                         Toast.makeText(AddOrder.this, "Failed to add order detail", Toast.LENGTH_SHORT).show();
                                     }
@@ -228,6 +221,26 @@ public class AddOrder extends AppCompatActivity {
 //                }
 //            });
 //            finish();
+
+//
+//            apiService.addOrder(order).enqueue(new Callback<Order>() {
+//                @Override
+//                public void onResponse(Call<Order> call, Response<Order> response) {
+//                    if (response.isSuccessful()) {
+//                        int orderId =response.body().getOrder_id();
+//                        orderdetail.setOrder_id(orderId);
+//                        Toast.makeText(AddOrder.this, "Order added successfully!", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(AddOrder.this, "Failed to add order"+userId, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Order> call, Throwable t) {
+//                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+            finish();
         });
     }
     private Bitmap decodeBase64(String base64Str) {
@@ -310,4 +323,6 @@ public class AddOrder extends AppCompatActivity {
             this.order_id = order_id;
         }
     }
+
+
 }

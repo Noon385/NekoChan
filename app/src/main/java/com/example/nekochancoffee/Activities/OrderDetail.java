@@ -3,6 +3,8 @@ package com.example.nekochancoffee.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,10 +22,13 @@ import com.example.nekochancoffee.Model.Adopt;
 import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.Order;
+import com.example.nekochancoffee.Model.Payment;
 import com.example.nekochancoffee.R;
 import com.example.nekochancoffee.network.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +40,11 @@ public class OrderDetail extends AppCompatActivity {
     private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal;
     private RecyclerView recyclerViewDrink;
     private OrderDetailAdapter adapter;
-    private FloatingActionButton btnAddOrderDetail;
+    private Button btnPaymentByCash, btnPaymentByMomo;
+   private WebView webViewPayment;
     private Drink drink;
-    private ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
+
+    private ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -56,7 +63,9 @@ public class OrderDetail extends AppCompatActivity {
             }
         });
 
-
+        webViewPayment = findViewById(R.id.webViewPayment);
+        webViewPayment.getSettings().setJavaScriptEnabled(true);
+        webViewPayment.setVisibility(View.GONE);
         txtUsername = findViewById(R.id.txtUsername);
         orderId = findViewById(R.id.orderId);
         tableName = findViewById(R.id.tableName);
@@ -64,24 +73,26 @@ public class OrderDetail extends AppCompatActivity {
         customerName = findViewById(R.id.customerName);
         txtTotal = findViewById(R.id.txtTotal);
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
-        btnAddOrderDetail = findViewById(R.id.btnAddOrderDetail);
-
+        btnPaymentByCash = findViewById(R.id.btnPaymentByCash);
+        btnPaymentByMomo = findViewById(R.id.btnPaymentByMomo);
+//        btnAddOrderDetail = findViewById(R.id.btnAddOrderDetail);
+         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         recyclerViewDrink.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewDrink.setAdapter(adapter);
-        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+
         if (orderdetail != null) {
             loadOrderDetail(orderdetail);
             loadDrinkDetail(orderdetail);
-
         }
-        btnAddOrderDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnPaymentByCash.setOnClickListener(v -> {
+            PaymentByCash();
 
-                Intent intent = new Intent(OrderDetail.this,AddOrderDetail.class);
-                intent.putExtra("order",orderdetail);
-                startActivity(intent);
-            }
+        });
+        btnPaymentByMomo.setOnClickListener(v -> {
+            PaymentByMomo();
+
+
+
         });
 
 
@@ -93,7 +104,7 @@ public class OrderDetail extends AppCompatActivity {
         catName.setText(order.getCat_name());
         customerName.setText(order.getCustomer_name());
         txtUsername.setText("Nhân viên: "+order.getUsername());
-        txtTotal.setText("Tổng: " + order.getTotal() + " VND");
+        txtTotal.setText("Tổng: " + order.getTotal_price() + " VND");
 
     }
     private void loadDrinkDetail(Order order){
@@ -120,6 +131,102 @@ public class OrderDetail extends AppCompatActivity {
                 Toast.makeText(OrderDetail.this, "Lỗi khi tải chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void PaymentByCash() {
+
+        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+        Order order_status = new Order();
+        order_status.setOrder_status("yes");
+
+        BigDecimal totalPrice = orderdetail.getTotal_price();
+        int points = calculatePoints(totalPrice); // Tính điểm khách hàng
+
+        // Cập nhật trạng thái đơn hàng
+        updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+    }
+
+    private void PaymentByMomo() {
+
+        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+        BigDecimal totalPrice = orderdetail.getTotal_price();
+        Payment payment = new Payment();
+        payment.setOrder_id(orderdetail.getOrder_id());
+        payment.setTotal_price(totalPrice);
+
+        // Thực hiện thanh toán MoMo
+        apiService.payment(payment).enqueue(new Callback<JsonObject>() {  // Sửa thành JsonObject để nhận kết quả trả về
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    // Lấy URL thanh toán từ JSON trả về
+                    JsonObject responseBody = response.body();
+                    String payUrl = responseBody.get("payUrl").getAsString();
+
+                    // Mở WebView để thanh toán
+                    webViewPayment.setVisibility(View.VISIBLE);
+                    webViewPayment.loadUrl(payUrl);
+
+                    // Cập nhật trạng thái đơn hàng sau khi thanh toán
+                    Order order_status = new Order();
+                    order_status.setOrder_status("yes");
+                    int points = calculatePoints(totalPrice);
+                    updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+                } else {
+                    Toast.makeText(OrderDetail.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(OrderDetail.this, "Lỗi kết nối khi thanh toán", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    // Phương thức cập nhật trạng thái đơn hàng và điểm khách hàng
+    private void updateOrderStatus(int orderId, Order orderStatus, int points) {
+        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+        apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(OrderDetail.this, "Cập nhật trạng thái đơn hàng thành công", Toast.LENGTH_SHORT).show();
+
+                    // Cập nhật điểm cho khách hàng
+                    Customer customer = new Customer();
+                    customer.setCustomer_point(String.valueOf(points));
+                    apiService.updateCustomer(orderdetail.getCustomer_id(), customer).enqueue(new Callback<Customer>() {
+                        @Override
+                        public void onResponse(Call<Customer> call, Response<Customer> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Customer> call, Throwable t) {
+                            Toast.makeText(OrderDetail.this, "Lỗi khi cập nhật điểm khách hàng", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(OrderDetail.this, "Cập nhật trạng thái đơn hàng thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(OrderDetail.this, "Lỗi kết nối khi cập nhật trạng thái đơn hàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Phương thức tính điểm từ tổng giá trị
+    private int calculatePoints(BigDecimal totalPrice) {
+        BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
+        return points.intValue();
     }
 
 }

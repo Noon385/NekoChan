@@ -15,7 +15,11 @@
         app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/ic_back"
         android:layout_marginTop="0dp"/>
-
+    <WebView
+        android:id="@+id/webViewPayment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -251,21 +255,34 @@
             android:textColor="@android:color/black"
             android:gravity="center"
             android:layout_marginTop="16dp"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnAddOrderDetail"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:contentDescription="Add OrderDetail"
-            android:src="@drawable/ic_add"
-            android:layout_gravity="right"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/btnPaymentByMomo"
+                android:backgroundTint="#D82D8B"
+                android:text="Thanh toán thông qua Momo"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/btnPaymentByCash"
+                android:backgroundTint="@color/brown"
+                android:text="Thanh toán bằng tiền mặt"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
-    <!-- Toolbar -->
+
 
 
 </LinearLayout>

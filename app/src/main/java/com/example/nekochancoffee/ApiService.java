@@ -8,9 +8,10 @@ import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.LoginResponse;
 import com.example.nekochancoffee.Model.Order;
-import com.example.nekochancoffee.Model.OrderResponse;
+import com.example.nekochancoffee.Model.Payment;
 import com.example.nekochancoffee.Model.Table;
 import com.example.nekochancoffee.Model.User;
+import com.google.gson.JsonObject;
 
 
 import java.util.List;
@@ -20,7 +21,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -226,10 +226,15 @@ public interface ApiService {
     //lấy thông tin món của order
     @GET("orderdetails/{order_id}")
     Call<List<Order>> getOrderDetailById(@Path("order_id") int order_id);
-    @DELETE("orders/{orderId}")
-    Call<Void> deleteOrder(@Path("orderId") int orderId);
+    @DELETE("orders/{order_id}")
+    Call<Void> deleteOrder(@Path("order_id") int order_id);
+    @PUT("orderstatus/{order_id}")
+    Call<Void> updateOrderStatus(@Path("order_id") int order_id, @Body Order order);
 
 
+    //thanh toán//////////////////////////////////////////////////////////
+    @POST("/payment")
+    Call<JsonObject> payment(@Body Payment payment);
 }
 
 

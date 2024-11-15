@@ -19,12 +19,13 @@ public class Order implements Serializable {
     private String username;
     private String drink_name;
     private int amount;
+    private BigDecimal total_price;
     private BigDecimal total;
 
     public Order() {
     }
 
-    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total) {
+    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total_price,BigDecimal total) {
         this.order_id = order_id;
         this.order_status = order_status;
         this.table_id = table_id;
@@ -39,9 +40,17 @@ public class Order implements Serializable {
         this.username = username;
         this.drink_name = drink_name;
         this.amount = amount;
-        this.total = total;
+        this.total_price = total_price;
+        this.total=total;
     }
 
+    public BigDecimal getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(BigDecimal total_price) {
+        this.total_price = total_price;
+    }
 
     public String getOrder_status() {
         return order_status;
@@ -162,4 +171,5 @@ public class Order implements Serializable {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.R;
 import com.example.nekochancoffee.network.RetrofitClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -25,11 +27,13 @@ import retrofit2.Response;
 public class OrderActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewOrder;
+    private FloatingActionButton btnAddOrder;
     private OrderAdapter orderAdapter;
     private List<Order> orderList;
     private Drink drink;
-    ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,12 @@ public class OrderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
 
         recyclerViewOrder = findViewById(R.id.recyclerViewOrder);
+        btnAddOrder = findViewById(R.id.btnAddNewOrder);
+        btnAddOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(OrderActivity.this,AddOrder.class);
+            intent.putExtra("drink",drink);
+            startActivity(intent);
+        });
         recyclerViewOrder.setLayoutManager(new GridLayoutManager(this, 2));
 
         // Tải dữ liệu đơn hàng
@@ -56,28 +66,25 @@ public class OrderActivity extends AppCompatActivity {
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     orderList = response.body();
-
-                    // Sử dụng đúng thứ tự tham số khi khởi tạo OrderAdapter
                     orderAdapter = new OrderAdapter(OrderActivity.this, orderList, new OrderAdapter.OnOrderActionListener() {
                         @Override
                         public void onDeleteOrder(Order order) {
-                            // Gọi API xóa đơn hàng
-//                            apiService.deleteOrder(order.getOrder_id()).enqueue(new Callback<Void>() {
-//                                @Override
-//                                public void onResponse(Call<Void> call, Response<Void> response) {
-//                                    if (response.isSuccessful()) {
-//                                        Toast.makeText(OrderActivity.this, "Xóa đơn hàng thành công", Toast.LENGTH_SHORT).show();
-//                                        loadOrder(); // Tải lại danh sách đơn hàng sau khi xóa
-//                                    } else {
-//                                        Toast.makeText(OrderActivity.this, "Không thể xóa đơn hàng", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<Void> call, Throwable t) {
-//                                    Toast.makeText(OrderActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
+                            apiService.deleteOrder(order.getOrder_id()).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(OrderActivity.this, "Xóa đơn hàng thành công", Toast.LENGTH_SHORT).show();
+                                        loadOrder();
+                                    } else {
+                                        Toast.makeText(OrderActivity.this, "Không thể xóa đơn hàng", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(OrderActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override
@@ -85,13 +92,13 @@ public class OrderActivity extends AppCompatActivity {
                             // Xử lý chỉnh sửa đơn hàng
                         }
 
-                        @Override
-                        public void onDetailOrder(Order order) {
-                            // Chuyển đến màn hình chi tiết đơn hàng
-                            Intent intent = new Intent(OrderActivity.this, OrderDetail.class);
-                            intent.putExtra("order", order);
-                            startActivity(intent);
-                        }
+//                        @Override
+//                        public void onDetailOrder(Order order) {
+//
+//                            Intent intent = new Intent(OrderActivity.this, OrderDetail.class);
+//                            intent.putExtra("order", order);
+//                            startActivity(intent);
+//                        }
                     }, drink); 
 
                     recyclerViewOrder.setAdapter(orderAdapter);

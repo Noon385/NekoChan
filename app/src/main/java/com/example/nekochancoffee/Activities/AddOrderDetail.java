@@ -1,10 +1,10 @@
 package com.example.nekochancoffee.Activities;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,13 +31,22 @@ public class AddOrderDetail extends AppCompatActivity {
     private Button btnAddOrder;
     private Order order;
     private Drink drink;
-    private ApiService apiService = RetrofitClient.getClient("https://4dfb-58-186-47-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_order_detail);
+
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_addOrder_detail);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Trở về Activity trước đó
+            }
+        });
 
         imgDrink = findViewById(R.id.imgDrink);
         txtDrinkName = findViewById(R.id.txtDrinkName);
@@ -64,7 +73,9 @@ public class AddOrderDetail extends AppCompatActivity {
         // Khi nhấn nút thêm đơn hàng
         btnAddOrder.setOnClickListener(v -> {
             addOrderDetail();
+            finish();
         });
+
     }
 
     private Bitmap decodeBase64(String base64Str) {
@@ -76,30 +87,30 @@ public class AddOrderDetail extends AppCompatActivity {
 
     private void addOrderDetail() {
         String amountStr = txtAmount.getText().toString();
-//        if (amountStr.isEmpty() || Integer.parseInt(amountStr) <= 0) {
-//            Toast.makeText(this, "Vui lòng nhập số lượng", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
+        if (amountStr.isEmpty() || Integer.parseInt(amountStr) <= 0) {
+            Toast.makeText(this, "Vui lòng nhập số lượng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         int amount = Integer.parseInt(amountStr);
-//        int drinkId = drink.getDrink_id();
-        double totalPrice = drink.getDrink_price().doubleValue() * amount;
+        BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
 
         // Tạo đối tượng OrderDetail
         Order orderDetail = new Order();
         orderDetail.setOrder_id(order.getOrder_id());
         orderDetail.setDrink_id(drink.getDrink_id());
         orderDetail.setAmount(amount);
-        orderDetail.setTotal(BigDecimal.valueOf(totalPrice));
+        orderDetail.setTotal(total);
 
-        // Gửi yêu cầu thêm chi tiết đơn hàng qua API
+
+
         apiService.addOrderDetail(orderDetail).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(AddOrderDetail.this, "Order detail added successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AddOrderDetail.this, "Failed to add order detail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderDetail.this, ""+orderDetail.getTotal(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -109,4 +120,5 @@ public class AddOrderDetail extends AppCompatActivity {
             }
         });
     }
+
 }

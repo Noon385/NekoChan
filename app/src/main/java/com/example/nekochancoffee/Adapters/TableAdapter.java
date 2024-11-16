@@ -16,6 +16,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nekochancoffee.Activities.CategoryActivity;
+import com.example.nekochancoffee.Activities.OrderActivity;
 import com.example.nekochancoffee.Activities.PaymentActivity;
 import com.example.nekochancoffee.Activities.TableDetail;
 import com.example.nekochancoffee.Model.Table;
@@ -63,7 +64,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
             context.startActivity(intent);
         });
         holder.imgPayment.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PaymentActivity.class);
+            Intent intent = new Intent(context, OrderActivity.class);
             intent.putExtra("tableId", table.getTable_id());
             intent.putExtra("tableStatus","no");
             context.startActivity(intent);

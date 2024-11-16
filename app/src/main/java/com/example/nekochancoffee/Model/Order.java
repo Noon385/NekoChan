@@ -2,10 +2,12 @@ package com.example.nekochancoffee.Model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Order implements Serializable {
     private int order_id;
     private String order_status;
+    private String order_time;
     private int table_id;
     private int customer_id;
     private int user_id;
@@ -25,7 +27,7 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total_price,BigDecimal total) {
+    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total_price,BigDecimal total,String order_time) {
         this.order_id = order_id;
         this.order_status = order_status;
         this.table_id = table_id;
@@ -42,6 +44,15 @@ public class Order implements Serializable {
         this.amount = amount;
         this.total_price = total_price;
         this.total=total;
+        this.order_time = order_time;
+    }
+
+    public String getOrder_time() {
+        return order_time;
+    }
+
+    public void setOrder_time(String order_time) {
+        this.order_time = order_time;
     }
 
     public BigDecimal getTotal_price() {

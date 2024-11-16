@@ -162,6 +162,23 @@
                     android:textSize="14sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày đặt:"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="8dp"/>
+                <TextView
+                    android:id="@+id/orderTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày tháng năm"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"/>
+            </TableRow>
 
         </TableLayout>
 

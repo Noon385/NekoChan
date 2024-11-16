@@ -15,7 +15,7 @@ import com.example.nekochancoffee.R;
 
 public class Option extends AppCompatActivity {
 
-    private CardView cardStaff, cardCategory, cardProduct, cardCustomer, cardLogout, cardOrder,cardAdopt;
+    private CardView cardStaff, cardCategory, cardProduct, cardCustomer, cardLogout, cardOrder,cardAdopt, cardStatistic;
     TextView txtUsername;
     private SharedPreferences sharedPreferences;
 
@@ -32,6 +32,7 @@ public class Option extends AppCompatActivity {
         cardLogout = findViewById(R.id.cardLogout);
         cardOrder = findViewById(R.id.cardOrder);
         cardAdopt = findViewById(R.id.cardAdopt);
+        cardStatistic = findViewById(R.id.cardStatistic);
         txtUsername = findViewById(R.id.txtUsername);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_option);
@@ -56,6 +57,7 @@ public class Option extends AppCompatActivity {
             // Hiển thị các chức năng cho nhân viên
             showStaffFeatures();
         }
+
         cardStaff.setOnClickListener(v -> {
             Intent intent = new Intent(Option.this, UserActivity.class);
             startActivity(intent);
@@ -85,6 +87,10 @@ public class Option extends AppCompatActivity {
             startActivity(intent);
         });
 
+        cardStatistic.setOnClickListener(v -> {
+            Intent intent = new Intent(Option.this, StatisticActivity.class);
+            startActivity(intent);
+        });
         cardLogout.setOnClickListener(v -> {
 
             Intent intent = new Intent(Option.this, LoginActivity.class);
@@ -101,6 +107,7 @@ public class Option extends AppCompatActivity {
         cardLogout.setVisibility(View.VISIBLE);
         cardOrder.setVisibility(View.VISIBLE);
         cardAdopt.setVisibility(View.VISIBLE);
+        cardStatistic.setVisibility(View.VISIBLE);
     }
 
 
@@ -112,6 +119,7 @@ public class Option extends AppCompatActivity {
         cardOrder.setVisibility(View.VISIBLE);
         cardLogout.setVisibility(View.VISIBLE);
         cardAdopt.setVisibility(View.VISIBLE);
+        cardStatistic.setVisibility(View.GONE);
     }
 
 }

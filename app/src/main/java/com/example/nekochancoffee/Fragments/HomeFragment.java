@@ -17,11 +17,14 @@ import android.widget.Toast;
 import com.example.nekochancoffee.Activities.AddCat;
 import com.example.nekochancoffee.Activities.CategoryActivity;
 import com.example.nekochancoffee.Activities.EditCat;
+import com.example.nekochancoffee.Activities.OrderActivity;
 import com.example.nekochancoffee.Adapters.CatAdapter;
 import com.example.nekochancoffee.Adapters.CategoryAdapter;
+import com.example.nekochancoffee.Adapters.OrderAdapter;
 import com.example.nekochancoffee.ApiService;
 import com.example.nekochancoffee.Model.Cat;
 import com.example.nekochancoffee.Model.Category;
+import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.R;
 import com.example.nekochancoffee.network.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,9 +42,11 @@ public class HomeFragment extends Fragment {
     private TextView txtCategory,txtOrder;
     private RecyclerView recyclerViewCategory,recyclerViewOrder;
     private CategoryAdapter categoryAdapter;
+    private OrderAdapter orderAdapter;
 
     private List<Category> categoryList;
-    ApiService apiService  = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/ ").create(ApiService.class);
+    private List<Order> orderList;
+    ApiService apiService  = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/ ").create(ApiService.class);
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -54,15 +59,20 @@ public class HomeFragment extends Fragment {
         txtOrder = rootView.findViewById(R.id.txtOrder);
 
         categoryList = new ArrayList<>();
+        orderList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
-
+        orderAdapter = new OrderAdapter(getContext(),orderList);
         txtCategory.setOnClickListener(v -> startActivity(new Intent(getContext(), CategoryActivity.class)));
-
+        txtOrder.setOnClickListener(v -> startActivity(new Intent(getContext(), OrderActivity.class)));
 
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         recyclerViewCategory.setAdapter(categoryAdapter);
 
+        recyclerViewOrder.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyclerViewOrder.setAdapter(orderAdapter);
+
         getCategory();
+        getOrder();
 
         return rootView;
     }
@@ -88,12 +98,32 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Không thể tải danh sách loại món", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
                 Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+    private void getOrder() {
+        Call<List<Order>> call = apiService.getOrders();
+        call.enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    orderList.clear();
+                    orderList.addAll(response.body());
+                    orderAdapter.notifyDataSetChanged(); // Cập nhật RecyclerView sau khi thêm dữ liệu
+                } else {
+                    Toast.makeText(getContext(), "Không thể tải danh sách hóa đơn", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }

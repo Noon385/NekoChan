@@ -53,6 +53,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
         holder.tvCatName.setText(cat.getCatName());
         holder.tvCatStatus.setText(cat.getCatStatus());
         holder.tvCatPrice.setText(cat.getCatPrice() + " VND");
+        holder.tvCatPrice.setVisibility(View.GONE);
 
 
 

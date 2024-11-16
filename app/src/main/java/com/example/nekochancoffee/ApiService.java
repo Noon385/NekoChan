@@ -9,6 +9,7 @@ import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.LoginResponse;
 import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.Model.Payment;
+import com.example.nekochancoffee.Model.Revenue;
 import com.example.nekochancoffee.Model.Table;
 import com.example.nekochancoffee.Model.User;
 import com.google.gson.JsonObject;
@@ -87,6 +88,10 @@ public interface ApiService {
     // Lấy danh sách tất cả khách hàng/////////////////////////////////////////////////////////////
     @GET("customers")
     Call<List<Customer>> getCustomers();
+
+    @GET("orderByCustomerId/{customer_id}")
+    Call<List<Order>> getOrderByCustomerId(@Path("customer_id") int customerId);
+
 
     // Thêm khách hàng mới
     @POST("customers")
@@ -235,6 +240,9 @@ public interface ApiService {
     //thanh toán//////////////////////////////////////////////////////////
     @POST("/payment")
     Call<JsonObject> payment(@Body Payment payment);
+    //doanh thu//////////////////////////////////////////////////////////
+    @GET("revenue")
+    Call<List<Revenue>> getRevenue();
 }
 
 

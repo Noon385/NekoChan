@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nekochancoffee.Adapters.AdoptAdapter;
+import com.example.nekochancoffee.Adapters.OrderAdapter;
 import com.example.nekochancoffee.ApiService;
 import com.example.nekochancoffee.Model.Adopt;
 import com.example.nekochancoffee.Model.Customer;
+import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.Model.User;
 import com.example.nekochancoffee.R;
 import com.example.nekochancoffee.network.RetrofitClient;
@@ -31,7 +33,9 @@ public class CustomerDetail extends AppCompatActivity {
     private TextView txName, txtPhone, txtPoint;
     private RecyclerView recyclerViewAdopt, recyclerViewOrder;
     private AdoptAdapter adoptAdapter;
-    ApiService apiService  = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
+    private OrderAdapter orderAdapter;
+    private List<Order> orderList;
+    ApiService apiService  = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,7 @@ public class CustomerDetail extends AppCompatActivity {
         if (customer != null) {
             loadCustomerData(customer);
             loadAdopt(customer);
+            loadOrder(customer);
         }
 
 
@@ -90,5 +95,26 @@ public class CustomerDetail extends AppCompatActivity {
         });
 
     }
+    private void loadOrder(Customer customer) {
+        Call<List<Order>> call = apiService.getOrderByCustomerId(customer.getCustomer_id());
+        call.enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    orderList = response.body();
+                    orderAdapter = new OrderAdapter(CustomerDetail.this, orderList);
+                    recyclerViewOrder.setAdapter(orderAdapter);
+                } else {
+                    Toast.makeText(CustomerDetail.this, "Không thể tải danh sách hóa đơn", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-}
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                Toast.makeText(CustomerDetail.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    }
+

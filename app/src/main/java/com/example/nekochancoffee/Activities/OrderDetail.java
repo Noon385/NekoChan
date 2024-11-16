@@ -37,14 +37,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderDetail extends AppCompatActivity {
-    private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal;
+    private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime;
     private RecyclerView recyclerViewDrink;
     private OrderDetailAdapter adapter;
     private Button btnPaymentByCash, btnPaymentByMomo;
    private WebView webViewPayment;
     private Drink drink;
 
-    private ApiService apiService = RetrofitClient.getClient("https://e45d-42-115-42-67.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -72,6 +72,7 @@ public class OrderDetail extends AppCompatActivity {
         catName = findViewById(R.id.catName);
         customerName = findViewById(R.id.customerName);
         txtTotal = findViewById(R.id.txtTotal);
+        orderTime  =findViewById(R.id.orderTime);
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
         btnPaymentByCash = findViewById(R.id.btnPaymentByCash);
         btnPaymentByMomo = findViewById(R.id.btnPaymentByMomo);
@@ -91,9 +92,9 @@ public class OrderDetail extends AppCompatActivity {
         btnPaymentByMomo.setOnClickListener(v -> {
             PaymentByMomo();
 
-
-
         });
+
+
 
 
     }
@@ -105,6 +106,13 @@ public class OrderDetail extends AppCompatActivity {
         customerName.setText(order.getCustomer_name());
         txtUsername.setText("Nhân viên: "+order.getUsername());
         txtTotal.setText("Tổng: " + order.getTotal_price() + " VND");
+        orderTime.setText(order.getOrder_time().toString());
+
+
+        if ("yes".equals(order.getOrder_status())) {
+            btnPaymentByCash.setVisibility(View.GONE);
+            btnPaymentByMomo.setVisibility(View.GONE);
+        }
 
     }
     private void loadDrinkDetail(Order order){

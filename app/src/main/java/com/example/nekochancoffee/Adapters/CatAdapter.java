@@ -52,7 +52,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
         // Set tên và trạng thái của mèo
         holder.tvCatName.setText(cat.getCatName());
         holder.tvCatStatus.setText(cat.getCatStatus());
-        holder.tvCatPrice.setText(cat.getCatPrice() + " VND");
+//        holder.tvCatPrice.setText(cat.getCatPrice() + " VND");
         holder.tvCatPrice.setVisibility(View.GONE);
 
 

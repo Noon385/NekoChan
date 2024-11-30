@@ -23,6 +23,7 @@ import com.example.nekochancoffee.Model.Customer;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.Order;
 import com.example.nekochancoffee.Model.Payment;
+import com.example.nekochancoffee.Model.Table;
 import com.example.nekochancoffee.R;
 import com.example.nekochancoffee.network.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,7 +45,7 @@ public class OrderDetail extends AppCompatActivity {
    private WebView webViewPayment;
     private Drink drink;
 
-    private ApiService apiService = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -151,6 +152,19 @@ public class OrderDetail extends AppCompatActivity {
 
         // Cập nhật trạng thái đơn hàng
         updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+        Table table = new Table();
+        table.setTable_status("no");
+        apiService.updateTableStatus(orderdetail.getTable_id(),table).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thành công" + orderdetail.getTable_id(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void PaymentByMomo() {
@@ -179,6 +193,19 @@ public class OrderDetail extends AppCompatActivity {
                     order_status.setOrder_status("yes");
                     int points = calculatePoints(totalPrice);
                     updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+                    Table table = new Table();
+                    table.setTable_status("no");
+                    apiService.updateTableStatus(order_status.getTable_id(),table).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Toast.makeText(OrderDetail.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
                 }
@@ -230,7 +257,6 @@ public class OrderDetail extends AppCompatActivity {
             }
         });
     }
-
     // Phương thức tính điểm từ tổng giá trị
     private int calculatePoints(BigDecimal totalPrice) {
         BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);

@@ -49,7 +49,7 @@ public interface ApiService {
     @POST("cats")
     Call<Void> addCat(@Part("cat_name") RequestBody cat_name,
                       @Part("cat_status") RequestBody cat_status,
-                      @Part("cat_price") RequestBody cat_price,
+
                       @Part MultipartBody.Part cat_image);
     //delete cat
     @DELETE("cats/{id}")
@@ -200,6 +200,9 @@ public interface ApiService {
     //Lấy thông tin bàn /////////////////////////////////////////////
     @GET("tables")
     Call<List<Table>> getTable();
+    @GET("tablesempty")
+    Call<List<Table>> getEmptyTable();
+
     //lấy thông tin bàn theo id
     @GET("tables/{id}")
     Call<Table> getTableById(@Path("id") int tableId);
@@ -221,6 +224,9 @@ public interface ApiService {
     Call<List<Order>> getOrders();
     @GET("order")
     Call<List<Order>> getOrder();
+
+    @GET("order/details/{table_id}")
+    Call<List<Order>> getOrderByTableId(@Path("table_id") int table_id);
 //Thêm order
     @POST("/addOrder")
     Call<AddOrder.OrderResponse> addOrder(@Body Order order);

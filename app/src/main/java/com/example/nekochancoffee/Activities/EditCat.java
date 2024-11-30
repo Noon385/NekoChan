@@ -47,7 +47,7 @@ public class EditCat extends AppCompatActivity {
     private Button btnEditCat;
     private ImageView imgCatImage;
     Uri imageUri;
-    ApiService apiService  = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     private int catId; // Mã mèo cần chỉnh sửa
 
@@ -58,7 +58,7 @@ public class EditCat extends AppCompatActivity {
 
         // Ánh xạ view
         txtCatName = findViewById(R.id.txtCatName);
-        txtCatPrice = findViewById(R.id.txtCatPrice);
+//        txtCatPrice = findViewById(R.id.txtCatPrice);
         rgStatus = findViewById(R.id.rg_editmenu_TinhTrang);
         rdAtStore = findViewById(R.id.rd_editcat_Atstore);
         rdAdopted = findViewById(R.id.rd_editcat_Adopted);
@@ -114,7 +114,7 @@ public class EditCat extends AppCompatActivity {
                     Cat cat = response.body();
                     Log.d("EditCat", "Cat details: " + cat.getCatName());  // Log thông tin mèo
                     txtCatName.setText(cat.getCatName());
-                    txtCatPrice.setText(String.valueOf(cat.getCatPrice()));
+//                    txtCatPrice.setText(String.valueOf(cat.getCatPrice()));
 
                     if ("At Store".equals(cat.getCatStatus())) {
                         rdAtStore.setChecked(true);

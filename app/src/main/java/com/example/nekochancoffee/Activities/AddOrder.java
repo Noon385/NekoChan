@@ -42,9 +42,8 @@ public class AddOrder extends AppCompatActivity {
     private Button btnAddOrder;
     private SharedPreferences sharedPreferences;
     private Drink drink;
-    private Table table;
     private final static int req =123;
-    private ApiService apiService = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +167,19 @@ public class AddOrder extends AppCompatActivity {
                         // Kiểm tra nếu orderId hợp lệ
                         if (orderId != 0) {
                             Toast.makeText(AddOrder.this, "Order added successfully! Order ID: " + orderId, Toast.LENGTH_SHORT).show();
+                            Table table = new Table();
+                            table.setTable_status("yes");
+                            apiService.updateTableStatus(order.getTable_id(),table).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
+                                }
 
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 //
                             orderdetail.setOrder_id(orderId);
                             apiService.addOrderDetail(orderdetail).enqueue(new Callback<Order>() {
@@ -293,7 +304,7 @@ public class AddOrder extends AppCompatActivity {
     }
     private void loadTables() {
 //        ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
-        apiService.getTable().enqueue(new Callback<List<Table>>() {
+        apiService.getEmptyTable().enqueue(new Callback<List<Table>>() {
             @Override
             public void onResponse(Call<List<Table>> call, Response<List<Table>> response) {
                 if (response.isSuccessful() && response.body() != null) {

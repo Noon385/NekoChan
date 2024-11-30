@@ -35,12 +35,12 @@ public class AddCat extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private CatAdapter catAdapter;
-    EditText txtCatName , txtCatPrice;
+    EditText txtCatName ;
     RadioButton rdAtStore, rdAdopted;
     Button btnAddCat;
     ImageView imgCat;
     Uri imageUri;
-    ApiService apiService = RetrofitClient.getClient("https://3d81-2001-ee0-51b2-2550-541a-a894-eb1-5c57.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class AddCat extends AppCompatActivity {
         setContentView(R.layout.cat_add_layout);
 
         txtCatName = findViewById(R.id.txtCatName);
-        txtCatPrice = findViewById(R.id.txtCatPrice);
+//        txtCatPrice = findViewById(R.id.txtCatPrice);
         rdAtStore = findViewById(R.id.rd_addcat_Atstore);
         rdAdopted = findViewById(R.id.rd_addcat_Adopted);
         btnAddCat = findViewById(R.id.btnAddCat);
@@ -85,10 +85,10 @@ public class AddCat extends AppCompatActivity {
 
     private void addCat() {
         String catName = txtCatName.getText().toString().trim();
-        String catPrice = txtCatPrice.getText().toString().trim();
+//        String catPrice = txtCatPrice.getText().toString().trim();
         String catStatus = rdAtStore.isChecked() ? "At Store" : (rdAdopted.isChecked() ? "Adopted" : "");
 
-        if (catName.isEmpty() || catStatus.isEmpty() || imageUri == null || catPrice.isEmpty()) {
+        if (catName.isEmpty() || catStatus.isEmpty() || imageUri == null ) {
             Toast.makeText(this, "Vui lòng nhập tên mèo, chọn tình trạng và ảnh!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -101,11 +101,11 @@ public class AddCat extends AppCompatActivity {
         // Tạo RequestBody cho các trường khác
         RequestBody cat_name = RequestBody.create(MediaType.parse("text/plain"), catName);
         RequestBody cat_status = RequestBody.create(MediaType.parse("text/plain"), catStatus);
-        RequestBody cat_price = RequestBody.create(MediaType.parse("text/plain"), catPrice);
+//        RequestBody cat_price = RequestBody.create(MediaType.parse("text/plain"), catPrice);
 
         // Gọi API
 
-        Call<Void> call = apiService.addCat(cat_name, cat_status, cat_price, cat_image);
+        Call<Void> call = apiService.addCat(cat_name, cat_status, cat_image);
 
         call.enqueue(new Callback<Void>() {
 

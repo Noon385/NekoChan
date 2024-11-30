@@ -7,17 +7,24 @@ public class Cat implements Serializable {
     private int cat_id;
     private String cat_name;
     private String cat_status;
-    private BigDecimal cat_price;
+//    private BigDecimal cat_price;
     private String cat_image;
 
 
     public Cat() {
     }
 
-    public Cat(String cat_name, String cat_status, BigDecimal cat_price, String cat_image) {
+//    public Cat(String cat_name, String cat_status, BigDecimal cat_price, String cat_image) {
+//        this.cat_name = cat_name;
+//        this.cat_status = cat_status;
+////        this.cat_price = cat_price;
+//        this.cat_image = cat_image;
+//    }
+
+    public Cat(int cat_id, String cat_name, String cat_status, String cat_image) {
+        this.cat_id = cat_id;
         this.cat_name = cat_name;
         this.cat_status = cat_status;
-        this.cat_price = cat_price;
         this.cat_image = cat_image;
     }
 
@@ -46,12 +53,12 @@ public class Cat implements Serializable {
         this.cat_status = cat_status;
     }
 
-    public BigDecimal getCatPrice() {
-        return cat_price;
-    }
-    public void setCatPrice(BigDecimal cat_price) {
-        this.cat_price = cat_price;
-    }
+//    public BigDecimal getCatPrice() {
+//        return cat_price;
+//    }
+//    public void setCatPrice(BigDecimal cat_price) {
+//        this.cat_price = cat_price;
+//    }
 
     // Getter và Setter cho ảnh dưới dạng base64
     public String getCatImage() {

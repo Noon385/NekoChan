@@ -30,7 +30,7 @@ public class DrinkActivity extends AppCompatActivity {
 
     private RecyclerView  recyclerView;
     private FloatingActionButton btnAddDrink;
-    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     private List<Drink>drinkList =new ArrayList<>();
     private DrinkAdapter adapter ;
@@ -81,7 +81,7 @@ public class DrinkActivity extends AppCompatActivity {
             public void onEditDrink(Drink drink) {
                 Intent intent = new Intent(DrinkActivity.this, EditDrink.class);
                 intent.putExtra("drink_id", drink.getDrink_id());
-                Toast.makeText(DrinkActivity.this, "Drink ID: " + drink.getDrink_id(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(DrinkActivity.this, "Drink ID: " + drink.getDrink_id(), Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
@@ -127,7 +127,7 @@ public class DrinkActivity extends AppCompatActivity {
                     drinkList.clear();
                     drinkList.addAll(response.body());
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(DrinkActivity.this, "Drink ID: " + response.body().get(0).getDrink_id(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(DrinkActivity.this, "Drink ID: " + response.body().get(0).getDrink_id(), Toast.LENGTH_LONG).show();
 
                 } else {
                     Toast.makeText(DrinkActivity.this, "Không thể tải danh sách món", Toast.LENGTH_SHORT).show();

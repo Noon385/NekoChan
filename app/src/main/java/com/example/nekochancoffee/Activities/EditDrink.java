@@ -48,7 +48,7 @@ public class EditDrink extends AppCompatActivity {
     private Spinner spinner;
     private Drink drink;
     private int drinkId;
-    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,8 @@ public class EditDrink extends AppCompatActivity {
             }
         });
 
-        drinkId = getIntent().getIntExtra("drinkId", -1);
+        drinkId = getIntent().getIntExtra("drink_id", -1);
+
         getDrinkDetails();
 
         loadCategories();
@@ -104,7 +105,7 @@ public class EditDrink extends AppCompatActivity {
                 } else {
 
                     Log.d("EditDrink", "Response error: " + response.code());
-                    Toast.makeText(EditDrink.this, "Không thể tải thông tin món", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditDrink.this, "Không thể tải thông tin món" + drinkId, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -193,7 +194,8 @@ public class EditDrink extends AppCompatActivity {
         RequestBody drink_status = RequestBody.create(MediaType.parse("text/plain"), drinkStatus);
         RequestBody category_id = RequestBody.create(MediaType.parse("text/plain"), categoryId);
 
-        Call<Void> call = apiService.updateDrink(drink.getDrink_id(), drink_name, drink_price, drink_status, category_id, drink_image);
+        int drink_id =drink.getDrink_id();
+        Call<Void> call = apiService.updateDrink(drink_id, drink_name, drink_price, drink_status, category_id, drink_image);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

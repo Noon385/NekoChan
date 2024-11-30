@@ -31,7 +31,7 @@ public class OrderActivity extends AppCompatActivity {
     private OrderAdapter orderAdapter;
     private List<Order> orderList;
     private Drink drink;
-    ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @SuppressLint("MissingInflatedId")
     @Override

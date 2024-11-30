@@ -37,7 +37,7 @@ public class TableDetail extends AppCompatActivity {
     private OrderDetailAdapter adapter;
     private Button btnPaymentByCash, btnPaymentByMomo;
     private WebView webViewPayment;
-    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
 
     @Override

@@ -101,6 +101,13 @@ public interface ApiService {
     @PUT("customers/{id}")
     Call<Customer> updateCustomer(@Path("id") int id, @Body Customer customer);
 
+    @PUT("customers/{customer_id}/points")
+    @FormUrlEncoded
+    Call<Void> updateCustomerPoints(
+            @Path("customer_id") int customer_id,
+            @Field("customer_point") int customer_point
+    );
+
     // Xóa khách hàng
     @DELETE("customers/{id}")
     Call<Void> deleteCustomer(@Path("id") int id);
@@ -175,7 +182,7 @@ public interface ApiService {
 
     // Cập nhật thông tin đồ uống
     @Multipart
-    @PUT("drinks/{drinkId}")
+    @PUT("drinks/{drink_id}")
     Call<Void> updateDrink(@Path("drink_id") int drink_id,
                            @Part("drink_name") RequestBody drink_name,
                            @Part("drink_price") RequestBody drink_price,
@@ -249,6 +256,7 @@ public interface ApiService {
     //doanh thu//////////////////////////////////////////////////////////
     @GET("revenue")
     Call<List<Revenue>> getRevenue();
+
 }
 
 

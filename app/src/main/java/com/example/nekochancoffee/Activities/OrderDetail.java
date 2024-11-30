@@ -45,7 +45,7 @@ public class OrderDetail extends AppCompatActivity {
    private WebView webViewPayment;
     private Drink drink;
 
-    private ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -148,16 +148,16 @@ public class OrderDetail extends AppCompatActivity {
         order_status.setOrder_status("yes");
 
         BigDecimal totalPrice = orderdetail.getTotal_price();
-        int points = calculatePoints(totalPrice); // Tính điểm khách hàng
 
-        // Cập nhật trạng thái đơn hàng
-        updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+        int points = calculatePoints(totalPrice);
+        updateOrderStatus(orderdetail.getOrder_id(), order_status,points);
+
         Table table = new Table();
         table.setTable_status("no");
         apiService.updateTableStatus(orderdetail.getTable_id(),table).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thành công" + orderdetail.getTable_id(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -229,21 +229,19 @@ public class OrderDetail extends AppCompatActivity {
                     Toast.makeText(OrderDetail.this, "Cập nhật trạng thái đơn hàng thành công", Toast.LENGTH_SHORT).show();
 
                     // Cập nhật điểm cho khách hàng
-                    Customer customer = new Customer();
-                    customer.setCustomer_point(String.valueOf(points));
-                    apiService.updateCustomer(orderdetail.getCustomer_id(), customer).enqueue(new Callback<Customer>() {
+                    apiService.updateCustomerPoints(orderdetail.getCustomer_id(), points).enqueue(new Callback<Void>() {
                         @Override
-                        public void onResponse(Call<Customer> call, Response<Customer> response) {
+                        public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {
-                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thành công! Điểm: " + points, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thất bại", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderDetail.this, "Cập nhật điểm khách hàng thất bại: " + response.code(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<Customer> call, Throwable t) {
-                            Toast.makeText(OrderDetail.this, "Lỗi khi cập nhật điểm khách hàng", Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(OrderDetail.this, "Lỗi kết nối khi cập nhật điểm khách hàng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -263,4 +261,5 @@ public class OrderDetail extends AppCompatActivity {
         return points.intValue();
     }
 
+    
 }

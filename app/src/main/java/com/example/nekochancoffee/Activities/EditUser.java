@@ -30,7 +30,7 @@ public class EditUser extends AppCompatActivity {
 //    private ApiService apiService;
     UserAdapter adapter;
     private User user; // Người dùng cần chỉnh sửa
-    ApiService apiService  = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

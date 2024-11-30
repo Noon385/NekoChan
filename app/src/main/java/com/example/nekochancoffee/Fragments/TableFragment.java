@@ -34,7 +34,7 @@ public class TableFragment extends Fragment {
     private FloatingActionButton btnAddTable;
     private TableAdapter tableAdapter;
     private List<Table> tableList;
-    ApiService apiService = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

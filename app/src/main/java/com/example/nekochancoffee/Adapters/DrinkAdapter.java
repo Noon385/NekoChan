@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nekochancoffee.Activities.AddOrder;
+import com.example.nekochancoffee.Activities.EditDrink;
 import com.example.nekochancoffee.Activities.OrderActivity;
 import com.example.nekochancoffee.Model.Drink;
 import com.example.nekochancoffee.Model.Order;
@@ -66,10 +68,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if ("Remain".equals(drink.getDrink_status())) {
                     Intent intent = new Intent(context, OrderActivity.class);
                     intent.putExtra("drink",drink);
-                    context.startActivity(intent);
+                    context.startActivity(intent);}
+                else Toast.makeText(v.getContext(), " Món đã hết", Toast.LENGTH_SHORT).show();
 
 
             }

@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class StatisticActivity extends AppCompatActivity {
 
-    ApiService apiService  = RetrofitClient.getClient("https://5725-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

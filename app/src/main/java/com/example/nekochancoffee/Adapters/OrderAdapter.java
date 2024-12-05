@@ -56,7 +56,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.txtOrderId.setText("Order ID: " + order.getOrder_id());
         holder.txtTableName.setText("Bàn số: " + order.getTable_name());
         holder.txtCustomerName.setText("Khách hàng: " + order.getCustomer_name());
-
         if(order.getTotal_price() == null){
             holder.txtTotal.setText("Tổng: 0 VND");
         }else holder.txtTotal.setText("Tổng: " + order.getTotal_price() + " VND");

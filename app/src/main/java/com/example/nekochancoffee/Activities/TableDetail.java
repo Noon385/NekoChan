@@ -32,12 +32,12 @@ import retrofit2.Response;
 
 public class TableDetail extends AppCompatActivity {
 
-    private TextView txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime;
+    private TextView txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime,customerPoint;
     private RecyclerView recyclerViewDrink;
     private OrderDetailAdapter adapter;
     private Button btnPaymentByCash, btnPaymentByMomo;
     private WebView webViewPayment;
-    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -60,6 +60,7 @@ public class TableDetail extends AppCompatActivity {
         tableName = findViewById(R.id.tableName);
         catName = findViewById(R.id.catName);
         customerName = findViewById(R.id.customerName);
+        customerPoint = findViewById(R.id.customerPoint);
         txtTotal = findViewById(R.id.txtTotal);
         orderTime  =findViewById(R.id.orderTime);
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
@@ -161,8 +162,6 @@ public class TableDetail extends AppCompatActivity {
         });
     }
 
-
-    // Phương thức cập nhật trạng thái đơn hàng và điểm khách hàng
     private void updateOrderStatus(int orderId, Order orderStatus, int points) {
         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
@@ -227,6 +226,7 @@ public class TableDetail extends AppCompatActivity {
 
     private void displayOrderDetails(Order order) {
         orderId.setText(String.valueOf(order.getOrder_id()));
+        customerPoint.setText(String.valueOf(order.getCustomer_point()));
         tableName.setText(order.getTable_name());
         catName.setText(order.getCat_name());
         customerName.setText(order.getCustomer_name());

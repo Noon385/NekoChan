@@ -29,7 +29,7 @@ public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActi
     private Button btnAddUser;
     private UserAdapter adapter;
     private List<User> userList = new ArrayList<>();
-    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

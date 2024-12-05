@@ -38,14 +38,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderDetail extends AppCompatActivity {
-    private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime;
+    private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime,customerPoint;
     private RecyclerView recyclerViewDrink;
     private OrderDetailAdapter adapter;
     private Button btnPaymentByCash, btnPaymentByMomo;
    private WebView webViewPayment;
     private Drink drink;
 
-    private ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -72,6 +72,7 @@ public class OrderDetail extends AppCompatActivity {
         tableName = findViewById(R.id.tableName);
         catName = findViewById(R.id.catName);
         customerName = findViewById(R.id.customerName);
+        customerPoint = findViewById(R.id.customerPoint);
         txtTotal = findViewById(R.id.txtTotal);
         orderTime  =findViewById(R.id.orderTime);
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
@@ -105,6 +106,7 @@ public class OrderDetail extends AppCompatActivity {
         tableName.setText(order.getTable_name());
         catName.setText(order.getCat_name());
         customerName.setText(order.getCustomer_name());
+        customerPoint.setText(String.valueOf(order.getCustomer_point()));
         txtUsername.setText("Nhân viên: "+order.getUsername());
         txtTotal.setText("Tổng: " + order.getTotal_price() + " VND");
         orderTime.setText(order.getOrder_time().toString());

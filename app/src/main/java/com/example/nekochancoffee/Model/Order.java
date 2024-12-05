@@ -10,11 +10,12 @@ public class Order implements Serializable {
     private String order_time;
     private int table_id;
     private int customer_id;
+    private int customer_point;
     private int user_id;
     private int drink_id;
     private int cat_id;
     private BigDecimal drink_price;
-
+private int total_amount;
     private String table_name;
     private String cat_name;
     private String customer_name;
@@ -27,7 +28,7 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total_price,BigDecimal total,String order_time) {
+    public Order(int order_id, String order_status, int table_id, int customer_id, int user_id, int drink_id, int cat_id, BigDecimal drink_price, String table_name, String cat_name, String customer_name, String username, String drink_name, int amount, BigDecimal total_price,BigDecimal total,String order_time,int customer_point) {
         this.order_id = order_id;
         this.order_status = order_status;
         this.table_id = table_id;
@@ -45,6 +46,19 @@ public class Order implements Serializable {
         this.total_price = total_price;
         this.total=total;
         this.order_time = order_time;
+        this.customer_point = customer_point;
+    }
+
+    public int getCustomer_point() {
+        return customer_point;
+    }
+
+    public void setCustomer_point(int customer_point) {
+        this.customer_point = customer_point;
+    }
+
+    public int getTotal_amount() {
+        return total_amount;
     }
 
     public String getOrder_time() {

@@ -2,6 +2,7 @@ package com.example.nekochancoffee;
 
 import com.example.nekochancoffee.Activities.AddOrder;
 import com.example.nekochancoffee.Model.Adopt;
+import com.example.nekochancoffee.Model.Bestseller;
 import com.example.nekochancoffee.Model.Cat;
 import com.example.nekochancoffee.Model.Category;
 import com.example.nekochancoffee.Model.Customer;
@@ -30,6 +31,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -254,8 +256,14 @@ public interface ApiService {
     @POST("/payment")
     Call<JsonObject> payment(@Body Payment payment);
     //doanh thu//////////////////////////////////////////////////////////
+//    @GET("revenue")
+//    Call<List<Revenue>> getRevenue();
+
     @GET("revenue")
-    Call<List<Revenue>> getRevenue();
+    Call<List<Revenue>> getRevenueByDateRange(@Query("startDate") String startDate, @Query("endDate") String endDate);
+    @GET("bestseller")
+    Call<List<Order>> getBestsellersByDateRange(@Query("startDate") String startDate, @Query("endDate") String endDate);
+
 
 }
 

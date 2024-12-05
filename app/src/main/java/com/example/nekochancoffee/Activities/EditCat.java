@@ -47,7 +47,7 @@ public class EditCat extends AppCompatActivity {
     private Button btnEditCat;
     private ImageView imgCatImage;
     Uri imageUri;
-    ApiService apiService  = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
 
     private int catId; // Mã mèo cần chỉnh sửa
 

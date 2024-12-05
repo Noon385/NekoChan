@@ -25,7 +25,7 @@ public class AddCustomer extends AppCompatActivity {
     private Button btnAddCustomer;
     CustomerAdapter adapter;
     private List<Customer> customerList = new ArrayList<>();
-    ApiService apiService = RetrofitClient.getClient("https://1c38-58-186-29-70.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,21 +6,113 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/cream"
     tools:context=".Activities.StatisticActivity">
+
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_Statistic"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/cream"
-        app:title="Thống kê doanh thu"
+        app:title="Thống kê"
         app:titleTextColor="@color/black"
-        app:navigationIcon="@drawable/ic_back"
-        tools:ignore="MissingConstraints"
-        />
-<com.github.mikephil.charting.charts.BarChart
-    android:id="@+id/chart"
+        app:navigationIcon="@drawable/ic_back" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn loại thống kê"
+        android:textColor="@color/black"/>
+<Spinner
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="wrap_content"
+    android:id="@+id/spinnerStatistic"
+    android:textColor="@color/black"/>
+<!--    android:entries="@array/statistic_options"/>-->
+    <!-- Date range selector -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/cream"
+        android:gravity="center">
 
+        <!-- Start Date -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingEnd="8dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày bắt đầu"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/startDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn ngày"
+                android:textColorHint="@color/black"
+                android:inputType="none"
+                android:focusable="false"
+                android:background="@color/teal"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- End Date -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày kết thúc"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/endDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn ngày"
+                android:textColorHint="@color/black"
+                android:inputType="none"
+                android:focusable="false"
+                android:background="@color/teal"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Filter Button -->
+    <Button
+        android:id="@+id/btnFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thống kê"
+        android:backgroundTint="@color/teal"
+        android:textColor="@color/black"
+        android:padding="10dp" />
+
+    <!-- Chart -->
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

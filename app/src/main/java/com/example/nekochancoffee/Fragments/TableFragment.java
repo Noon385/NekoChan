@@ -34,12 +34,11 @@ public class TableFragment extends Fragment {
     private FloatingActionButton btnAddTable;
     private TableAdapter tableAdapter;
     private List<Table> tableList;
-    ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_table, container, false);
-
         recyclerViewTable = rootView.findViewById(R.id.recyclerViewTables);
         btnAddTable = rootView.findViewById(R.id.btnAddTable);
 

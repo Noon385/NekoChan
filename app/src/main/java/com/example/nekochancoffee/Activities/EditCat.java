@@ -47,7 +47,7 @@ public class EditCat extends AppCompatActivity {
     private Button btnEditCat;
     private ImageView imgCatImage;
     Uri imageUri;
-    ApiService apiService  = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     private int catId; // Mã mèo cần chỉnh sửa
 
@@ -147,10 +147,10 @@ public class EditCat extends AppCompatActivity {
     // Hàm cập nhật thông tin mèo
     private void updateCat() {
         String catName = txtCatName.getText().toString().trim();
-        String catPrice = txtCatPrice.getText().toString().trim();
+//        String catPrice = txtCatPrice.getText().toString().trim();
         String catStatus = rdAtStore.isChecked() ? "At Store" : (rdAdopted.isChecked() ? "Adopted" : "");
 
-        if (catName.isEmpty() || catStatus.isEmpty() || imageUri == null || catPrice.isEmpty()) {
+        if (catName.isEmpty() || catStatus.isEmpty() || imageUri == null ) {
             Toast.makeText(this, "Vui lòng nhập tên mèo, chọn tình trạng và ảnh!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -163,11 +163,11 @@ public class EditCat extends AppCompatActivity {
         // Tạo RequestBody cho các trường khác
         RequestBody cat_name = RequestBody.create(MediaType.parse("text/plain"), catName);
         RequestBody cat_status = RequestBody.create(MediaType.parse("text/plain"), catStatus);
-        RequestBody cat_price = RequestBody.create(MediaType.parse("text/plain"), catPrice);
+//        RequestBody cat_price = RequestBody.create(MediaType.parse("text/plain"), catPrice);
 
         // Gọi API
 //        ApiService apiService = RetrofitClient.getClient("https://e8da-58-186-28-106.ngrok-free.app/").create(ApiService.class);
-        Call<Void> call = apiService.updateCat(catId, cat_name, cat_status, cat_price, cat_image);
+        Call<Void> call = apiService.updateCat(catId, cat_name, cat_status,  cat_image);
 
         call.enqueue(new Callback<Void>() {
 

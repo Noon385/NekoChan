@@ -33,7 +33,7 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCategory;
     private CategoryAdapter adapter;
     private List<Category> categoryList = new ArrayList<>();
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class CategoryActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(CategoryActivity.this, Option.class));
                 finish();
             }
         });

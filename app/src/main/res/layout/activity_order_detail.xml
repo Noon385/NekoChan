@@ -321,9 +321,13 @@
                 android:text="Thanh toán bằng tiền mặt"/>
         </LinearLayout>
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnExport"
+            android:text="Xuất PDF "
+            android:layout_gravity="center"/>
     </LinearLayout>
-
 
 
 

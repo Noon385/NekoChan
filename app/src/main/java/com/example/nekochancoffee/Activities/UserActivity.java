@@ -31,7 +31,7 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnUse
     private UserAdapter userAdapter;
     private List<User> userList;
     private FloatingActionButton fabAddUser;
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,13 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnUse
         // Set up toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserActivity.this, Option.class));
+                finish();
+            }
+        });
     }
 
 

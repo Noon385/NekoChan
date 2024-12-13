@@ -31,7 +31,7 @@ public class AddOrderDetail extends AppCompatActivity {
     private Button btnAddOrder;
     private Order order;
     private Drink drink;
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -59,7 +59,7 @@ public class AddOrderDetail extends AppCompatActivity {
         order = (Order) getIntent().getSerializableExtra("order");
         drink = (Drink) getIntent().getSerializableExtra("drink");
 
-        txtOrderId.setText("ID bàn: " + order.getOrder_id());
+        txtOrderId.setText("Order ID : " + order.getOrder_id());
         txtDrinkName.setText(drink.getDrink_name());
 
         // Hiển thị ảnh đồ uống

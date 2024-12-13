@@ -40,6 +40,7 @@ public class Option extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(Option.this,MainActivity.class));
                 finish(); // Trở về Activity trước đó
             }
         });

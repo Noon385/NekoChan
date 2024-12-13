@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
     private SharedPreferences sharedPreferences;
-    ApiService apiService  = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,12 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
+//            Toast.makeText(LoginActivity.this, ""+username+password, Toast.LENGTH_SHORT).show();
             login(username, password);
+
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
         });
     }
 

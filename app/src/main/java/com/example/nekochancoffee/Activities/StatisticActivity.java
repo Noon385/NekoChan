@@ -2,6 +2,7 @@
 package com.example.nekochancoffee.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,7 @@ import retrofit2.Response;
 
 public class StatisticActivity extends AppCompatActivity {
 
-    ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
     private EditText startDate, endDate;
     private Button btnFilter;
     private Spinner spinnerStatistic;
@@ -56,7 +57,13 @@ public class StatisticActivity extends AppCompatActivity {
         // Toolbar setup
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_Statistic);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StatisticActivity.this, Option.class));
+                finish();
+            }
+        });
 
         // Initialize views
         startDate = findViewById(R.id.startDate);
@@ -75,6 +82,7 @@ public class StatisticActivity extends AppCompatActivity {
         List<String> statisticOptions = new ArrayList<>();
         statisticOptions.add("Doanh thu");
         statisticOptions.add("Món bán chạy");
+        statisticOptions.add("Mèo được ưa thích");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, statisticOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // Áp dụng layout sẵn có cho danh sách dropdown
@@ -100,7 +108,9 @@ public class StatisticActivity extends AppCompatActivity {
                         fetchRevenueData(chart, start, end);
                     } else if (selectedOption.equals("Món bán chạy")) {
                         fetchBestsellerData(chart, start, end);
-                    }
+                    } else if (selectedOption.equals("Mèo được ưa thích")) {
+                    fetchBestcatsData(chart, start, end);
+                }
                 });
             }
 
@@ -249,6 +259,69 @@ public class StatisticActivity extends AppCompatActivity {
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
         chart.invalidate();
     }
+
+    // bestcats
+    private void fetchBestcatsData(BarChart chart, String startDate, String endDate) {
+        Call<List<Order>> call = apiService.getBestcatsByDateRange(startDate, endDate);
+        call.enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Order> bestcatsList = response.body();
+                    if (bestcatsList.isEmpty()) {
+                        Toast.makeText(StatisticActivity.this, "Không có dữ liệu mèo", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("RawAPIResponse", response.body().toString());
+                        updateBestcatsChart(chart, bestcatsList);
+                    }
+                } else {
+                    Toast.makeText(StatisticActivity.this, "Lỗi kết nối, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(StatisticActivity.this, "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateBestcatsChart(BarChart chart, List<Order> bestcatsList) {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+
+        // Logging to ensure data is correctly received
+        Log.d("BestcatsData", "Received data size: " + bestcatsList.size());
+
+        for (int i = 0; i < bestcatsList.size(); i++) {
+            Order bestcat = bestcatsList.get(i);
+            String catName = bestcat.getCat_name() != null ? bestcat.getCat_name() : "No Name";
+            int catAmount = bestcat.getCat_amount();
+            Log.d("BestcatsData", "Cat: " + bestcat.getCat_name() + ", Amount: " + bestcat.getCat_amount());
+
+
+
+            entries.add(new BarEntry(i, catAmount));  // Using the amount for the Y value
+            labels.add(catName);  // Using the cat name for the X label
+        }
+
+        // Create the BarDataSet and set chart data
+        BarDataSet dataSet = new BarDataSet(entries, "Mèo được ưa thích");
+        dataSet.setColor(getResources().getColor(R.color.teal));  // Set the bar color
+        BarData data = new BarData(dataSet);
+        data.setBarWidth(0.9f);  // Set bar width for better spacing
+
+        // Set the data to the chart
+        chart.setData(data);
+
+        // Set the labels for the X axis
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        chart.invalidate();  // Refresh the chart to display the new data
+    }
+
+
+
 
 }
 

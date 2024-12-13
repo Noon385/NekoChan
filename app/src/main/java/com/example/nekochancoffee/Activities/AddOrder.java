@@ -43,7 +43,7 @@ public class AddOrder extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Drink drink;
     private final static int req =123;
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,10 +125,10 @@ public class AddOrder extends AppCompatActivity {
 
             int amount;
             try {
-                amount = Integer.parseInt(amountText); // Parse the amount
+                amount = Integer.parseInt(amountText); 
             } catch (NumberFormatException e) {
                 Toast.makeText(AddOrder.this, "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
-                return;  // Return early if the input is invalid
+                return;
             }
 
             BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);

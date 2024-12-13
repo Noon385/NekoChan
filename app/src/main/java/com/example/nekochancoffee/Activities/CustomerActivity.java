@@ -29,7 +29,7 @@ public class CustomerActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCustomers;
 //    private ApiService apiService;
 
-    ApiService apiService  = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,7 @@ public class CustomerActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(CustomerActivity.this, Option.class));
                 finish();
             }
         });

@@ -1,7 +1,11 @@
 package com.example.nekochancoffee.Activities;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -29,7 +33,11 @@ import com.example.nekochancoffee.network.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +49,12 @@ public class OrderDetail extends AppCompatActivity {
     private TextView  txtUsername,  orderId, tableName, catName, customerName, txtTotal, orderTime,customerPoint;
     private RecyclerView recyclerViewDrink;
     private OrderDetailAdapter adapter;
-    private Button btnPaymentByCash, btnPaymentByMomo;
+    private Button btnPaymentByCash, btnPaymentByMomo,btnExport;
    private WebView webViewPayment;
     private Drink drink;
+    private List<Order> orderDetails;
 
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -78,7 +87,8 @@ public class OrderDetail extends AppCompatActivity {
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
         btnPaymentByCash = findViewById(R.id.btnPaymentByCash);
         btnPaymentByMomo = findViewById(R.id.btnPaymentByMomo);
-//        btnAddOrderDetail = findViewById(R.id.btnAddOrderDetail);
+        btnExport = findViewById(R.id.btnExport);
+
          Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         recyclerViewDrink.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewDrink.setAdapter(adapter);
@@ -95,7 +105,14 @@ public class OrderDetail extends AppCompatActivity {
             PaymentByMomo();
 
         });
-
+        btnExport.setOnClickListener(v -> {
+            Order order = (Order) getIntent().getSerializableExtra("order");
+            if (order != null) {
+                generatePdf(order);
+            } else {
+                Toast.makeText(OrderDetail.this, "Không có thông tin hóa đơn để in", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -125,7 +142,7 @@ public class OrderDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Order> orderDetails = response.body();
+                     orderDetails = response.body();
 
                     // Thiết lập adapter với dữ liệu lấy được từ API
                     adapter = new OrderDetailAdapter(orderDetails);
@@ -171,8 +188,14 @@ public class OrderDetail extends AppCompatActivity {
 
     private void PaymentByMomo() {
 
+
         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+        if (orderdetail == null) {
+            Toast.makeText(this, "Không có chi tiết đơn hàng ", Toast.LENGTH_SHORT).show();
+            return;
+        }
         BigDecimal totalPrice = orderdetail.getTotal_price();
+
         Payment payment = new Payment();
         payment.setOrder_id(orderdetail.getOrder_id());
         payment.setTotal_price(totalPrice);
@@ -195,6 +218,7 @@ public class OrderDetail extends AppCompatActivity {
                     order_status.setOrder_status("yes");
                     int points = calculatePoints(totalPrice);
                     updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+
                     Table table = new Table();
                     table.setTable_status("no");
                     apiService.updateTableStatus(order_status.getTable_id(),table).enqueue(new Callback<Void>() {
@@ -262,6 +286,94 @@ public class OrderDetail extends AppCompatActivity {
         BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
         return points.intValue();
     }
+    private void generatePdf(Order order) {
+        // Khởi tạo PdfDocument
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint paint = new Paint();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
 
-    
+        Canvas canvas = page.getCanvas();
+
+        // Thiết lập nội dung hóa đơn
+        int x = 10, y = 25;
+        paint.setTextSize(14);
+
+
+        paint.setTextSize(18);
+        canvas.drawText("HÓA ĐƠN THANH TOÁN", 595 / 2 - 100, y, paint);
+
+        y += 30;
+        paint.setTextSize(14);
+        canvas.drawText("Mã hóa đơn: " + order.getOrder_id(), x, y, paint);
+        y += 20;
+        canvas.drawText("Tên bàn: " + order.getTable_name(), x, y, paint);
+        y += 20;
+        canvas.drawText("Tên thú cưng: " + order.getCat_name(), x, y, paint);
+        y += 20;
+        canvas.drawText("Tên khách hàng: " + order.getCustomer_name(), x, y, paint);
+        y += 20;
+        canvas.drawText("Điểm số: " + order.getCustomer_point(), x, y, paint);
+        y += 20;
+        canvas.drawText("Thời gian: " + order.getOrder_time(), x, y, paint);
+        y += 20;
+
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0 VND");
+
+        y += 30;
+        canvas.drawLine(x, y, x + 550, y, paint);
+        y += 20;
+
+        paint.setTextSize(14);
+        canvas.drawText("Tên đồ uống", x, y, paint);
+        canvas.drawText("Số lượng", x + 250, y, paint);
+        canvas.drawText("Giá", x + 400, y, paint);
+
+        y += 20;
+        canvas.drawLine(x, y, x + 550, y, paint);
+        y += 20;
+
+        // Chi tiết đồ uống
+        if (orderDetails != null && !orderDetails.isEmpty()) {
+            paint.setTextSize(12);
+            for (Order detail : orderDetails) {
+                canvas.drawText(detail.getDrink_name(), x, y, paint);
+                canvas.drawText(String.valueOf(detail.getAmount()), x + 250, y, paint);
+                canvas.drawText(decimalFormat.format(detail.getDrink_price()), x + 400, y, paint);
+                y += 20;
+            }
+        } else {
+            canvas.drawText("Không có chi tiết đồ uống.", x, y, paint);
+            y += 20;
+        }
+
+        y += 10;
+        canvas.drawLine(x, y, x + 550, y, paint);
+        y += 30;
+
+        paint.setTextSize(16);
+        canvas.drawText("Tổng tiền: " + decimalFormat.format(order.getTotal_price()), 595 / 2 - 100, y, paint);
+
+
+        pdfDocument.finishPage(page);
+        String directoryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/HoaDonPDF";
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        File file = new File(directory, "HoaDon_" + order.getOrder_id() + ".pdf");
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(file));
+            Toast.makeText(this, "Hóa đơn đã được lưu tại: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Lỗi khi lưu hóa đơn", Toast.LENGTH_SHORT).show();
+        }
+
+        pdfDocument.close();
+    }
+
+
+
 }

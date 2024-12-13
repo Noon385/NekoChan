@@ -30,7 +30,7 @@ public class DrinkActivity extends AppCompatActivity {
 
     private RecyclerView  recyclerView;
     private FloatingActionButton btnAddDrink;
-    private ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     private List<Drink>drinkList =new ArrayList<>();
     private DrinkAdapter adapter ;
@@ -47,6 +47,8 @@ public class DrinkActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(DrinkActivity.this, Option.class));
+
                 finish();
             }
         });

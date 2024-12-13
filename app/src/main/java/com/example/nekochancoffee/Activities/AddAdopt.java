@@ -30,7 +30,7 @@ public class AddAdopt extends AppCompatActivity {
     private Button btnAddAdopt;
     private Cat selectedCat;
     private Customer selectedCustomer;
-    ApiService apiService = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

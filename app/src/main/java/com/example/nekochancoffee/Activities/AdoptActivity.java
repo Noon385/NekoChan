@@ -29,7 +29,7 @@ public class AdoptActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAdopt;
     private AdoptAdapter adoptAdapter;
     private FloatingActionButton btnAddAdopt;
-    ApiService apiService  = RetrofitClient.getClient("https://c485-42-118-27-48.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -44,6 +44,7 @@ public class AdoptActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(AdoptActivity.this, Option.class));
                 finish();
             }
         });

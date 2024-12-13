@@ -65,7 +65,7 @@ public interface ApiService {
             @Path("catId") int catId,
             @Part("cat_name") RequestBody cat_name,
             @Part("cat_status") RequestBody cat_status,
-            @Part("cat_price") RequestBody cat_price,
+
             @Part MultipartBody.Part cat_image
     );
 
@@ -255,15 +255,14 @@ public interface ApiService {
     //thanh toán//////////////////////////////////////////////////////////
     @POST("/payment")
     Call<JsonObject> payment(@Body Payment payment);
-    //doanh thu//////////////////////////////////////////////////////////
-//    @GET("revenue")
-//    Call<List<Revenue>> getRevenue();
 
+//thống kê/////////////////////////////////////////////////////////////////
     @GET("revenue")
     Call<List<Revenue>> getRevenueByDateRange(@Query("startDate") String startDate, @Query("endDate") String endDate);
     @GET("bestseller")
     Call<List<Order>> getBestsellersByDateRange(@Query("startDate") String startDate, @Query("endDate") String endDate);
-
+    @GET("bestcats")
+    Call<List<Order>> getBestcatsByDateRange(@Query("startDate") String startDate, @Query("endDate") String endDate);
 
 }
 

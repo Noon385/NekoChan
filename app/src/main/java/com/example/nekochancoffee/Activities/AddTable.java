@@ -47,10 +47,10 @@ public class AddTable extends AppCompatActivity {
             return;
         }
 
-        // Create a Table object with the required data
+
         Table newTable = new Table();
         newTable.setTable_name(name);
-        newTable.setTable_status("no"); // Default status
+        newTable.setTable_status("no");
 
         Call<Void> call = apiService.addTable(newTable);
         call.enqueue(new Callback<Void>() {

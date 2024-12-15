@@ -25,18 +25,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         User user = (User) getIntent().getSerializableExtra("username");
-
-
-        // BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // Xử lý sự kiện khi người dùng chọn mục
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
 
-                // Kiểm tra và chọn fragment tương ứng
+
                 if (item.getItemId() == R.id.nav_home) {
                     selectedFragment = new HomeFragment();
                 } else if (item.getItemId() == R.id.nav_cat) {
@@ -49,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
-                // Thay đổi fragment khi có mục được chọn
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, selectedFragment)
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Mặc định hiển thị HomeFragment khi mở ứng dụng
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())

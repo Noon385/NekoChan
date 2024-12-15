@@ -55,23 +55,23 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
         Adopt adopt = adoptList.get(position);
 
         if (adopt.getCat_image() != null && !adopt.getCat_image().isEmpty()) {
-            // Chuyển đổi base64 thành Bitmap
+
             Bitmap bitmap = decodeBase64(adopt.getCat_image());
-            holder.imgCat.setImageBitmap(bitmap); // Set hình ảnh cho ImageView
+            holder.imgCat.setImageBitmap(bitmap);
         } else {
-            // Nếu không có ảnh, hiển thị hình mặc định
+
             holder.imgCat.setImageResource(R.drawable.t);
         }
 //        Picasso.get().load(adopt.getCat_image()).into(holder.imgCat);
 
-        // Set other data
+
         holder.txtCatName.setText(adopt.getCat_name());
         holder.txtCatStatus.setText("Status: " + adopt.getCat_status());
         holder.txtCustomerName.setText("Owner: " + adopt.getCustomer_name());
         holder.txtAdoptTime.setText("Adopted on: " + adopt.getAdopt_time());
 
         holder.itemView.setOnClickListener(v -> {
-            // Mở chi tiết thông tin về nhận nuôi
+
             Intent intent = new Intent(context, AdoptDetail.class);
             intent.putExtra("adopt", adopt);
             context.startActivity(intent);
@@ -120,14 +120,12 @@ public class AdoptAdapter extends RecyclerView.Adapter<AdoptAdapter.AdoptViewHol
                     notifyItemRemoved(position);
                     Toast.makeText(context, "Đơn nhận nuôi đã được xóa thành công!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Hiển thị thông báo nếu yêu cầu không thành công
                     Toast.makeText(context, "Lỗi: " + adoptId+response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Thông báo lỗi khi yêu cầu thất bại
                 Toast.makeText(context, "Lỗi khi xóa danh sách nhận nuôi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -38,11 +38,8 @@ public class OrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-
-        // Lấy đối tượng Drink từ Intent
         drink = (Drink) getIntent().getSerializableExtra("drink");
 
-        // Thiết lập Toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_order);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -61,8 +58,6 @@ public class OrderActivity extends AppCompatActivity {
             startActivity(intent);
         });
         recyclerViewOrder.setLayoutManager(new GridLayoutManager(this, 2));
-
-        // Tải dữ liệu đơn hàng
         loadOrder();
     }
 

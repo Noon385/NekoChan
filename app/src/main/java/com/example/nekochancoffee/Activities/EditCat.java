@@ -49,14 +49,14 @@ public class EditCat extends AppCompatActivity {
     Uri imageUri;
     ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
-    private int catId; // Mã mèo cần chỉnh sửa
+    private int catId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_cat); // Đảm bảo tên file đúng
+        setContentView(R.layout.activity_edit_cat);
 
-        // Ánh xạ view
+
         txtCatName = findViewById(R.id.txtCatName);
 //        txtCatPrice = findViewById(R.id.txtCatPrice);
         rgStatus = findViewById(R.id.rg_editmenu_TinhTrang);
@@ -73,12 +73,9 @@ public class EditCat extends AppCompatActivity {
                 finish(); // Trở về Activity trước đó
             }
         });
-        // Nhận catId từ Intent
 
         catId = getIntent().getIntExtra("catId", -1);
         Log.d("EditCat", "Received catId: " + catId);
-
-        // Lấy thông tin mèo từ API để điền vào các trường
         getCatDetails();
 
         btnEditCat.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +141,7 @@ public class EditCat extends AppCompatActivity {
         });
     }
 
-    // Hàm cập nhật thông tin mèo
+
     private void updateCat() {
         String catName = txtCatName.getText().toString().trim();
 //        String catPrice = txtCatPrice.getText().toString().trim();
@@ -176,10 +173,10 @@ public class EditCat extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditCat.this, "Sửa mèo thành công!", Toast.LENGTH_SHORT).show();
 
-                    finish(); // Quay về màn hình trước
+                    finish();
                 } else {
                     try {
-                        // Lấy nội dung lỗi từ errorBody và chuyển thành chuỗi
+
                         String errorBody = response.errorBody().string();
                         Log.d("EditCat", "Error body: " + errorBody);
                         Toast.makeText(EditCat.this, "Sửa mèo thất bại! Lỗi: " + errorBody, Toast.LENGTH_LONG).show();

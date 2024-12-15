@@ -86,7 +86,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         }
     }
 
-    // Hiển thị Popup Menu khi nhấn nút "More"
+
     private void showPopupMenu(View view, int position, Customer customer) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
@@ -109,7 +109,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         popupMenu.show();
     }
 
-    // Thêm khách hàng mới
+
     public void addCustomer(Customer customer) {
         customerApi.addCustomer(customer).enqueue(new Callback<Customer>() {
             @Override
@@ -129,7 +129,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         });
     }
 
-    // Cập nhật thông tin khách hàng
+
     public void editCustomer(Customer customer) {
         customerApi.updateCustomer(customer.getCustomer_id(), customer).enqueue(new Callback<Customer>() {
             @Override
@@ -149,7 +149,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         });
     }
 
-    // Xóa khách hàng
+
     public void deleteCustomer(int position, int customerId) {
         customerApi.deleteCustomer(customerId).enqueue(new Callback<Void>() {
             @Override
@@ -170,9 +170,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         });
     }
 
-    // Hiển thị danh sách mèo của khách hàng
+
     public void viewCustomerCats(Customer customer) {
-        // Logic để hiển thị danh sách mèo của khách hàng
         Toast.makeText(context, "Xem danh sách mèo của: " + customer.getCustomer_name(), Toast.LENGTH_SHORT).show();
     }
 }

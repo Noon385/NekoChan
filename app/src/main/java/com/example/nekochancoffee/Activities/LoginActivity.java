@@ -146,14 +146,14 @@ public class LoginActivity extends AppCompatActivity {
                         String role = response.body().getRole();
                         int id = response.body().getId();
 //                        Toast.makeText(LoginActivity.this, id, Toast.LENGTH_SHORT).show();
-                        // Lưu vai trò vào SharedPreference
+
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("role", role);
                         editor.putString("username",username);
                         editor.putInt("id",id);
                         editor.apply();
 
-                        // Điều hướng tới màn hình chính
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();

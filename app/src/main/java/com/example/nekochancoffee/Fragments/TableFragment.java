@@ -42,10 +42,8 @@ public class TableFragment extends Fragment {
         recyclerViewTable = rootView.findViewById(R.id.recyclerViewTables);
         btnAddTable = rootView.findViewById(R.id.btnAddTable);
 
-        // Initialize the table list
         tableList = new ArrayList<>();
 
-        // Set up RecyclerView with the adapter
         tableAdapter = new TableAdapter(getContext(), tableList, new TableAdapter.OnTableActionListener() {
             @Override
             public void onDeleteTable(Table table) {
@@ -70,8 +68,6 @@ public class TableFragment extends Fragment {
 
         recyclerViewTable.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerViewTable.setAdapter(tableAdapter);
-
-        // Fetch the list of tables from the API
         getTables();
 
         return rootView;
@@ -83,7 +79,6 @@ public class TableFragment extends Fragment {
         getTables();
     }
 
-    // Method to fetch tables from the API
     private void getTables() {
         Call<List<Table>> call = apiService.getTable();
         call.enqueue(new Callback<List<Table>>() {
@@ -105,7 +100,6 @@ public class TableFragment extends Fragment {
         });
     }
 
-    // Method to delete a table
     private void deleteTable(int table_id) {
         Call<Void> call = apiService.deleteTable(table_id);
         call.enqueue(new Callback<Void>() {
@@ -113,7 +107,7 @@ public class TableFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Table deleted", Toast.LENGTH_SHORT).show();
-                    getTables(); // Reload table list
+                    getTables();
                 } else {
                     Toast.makeText(getContext(), "Failed to delete table", Toast.LENGTH_SHORT).show();
                 }

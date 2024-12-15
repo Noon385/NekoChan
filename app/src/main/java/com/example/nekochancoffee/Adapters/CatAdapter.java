@@ -59,11 +59,9 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
 
 
         if (cat.getCatImage() != null && !cat.getCatImage().isEmpty()) {
-            // Chuyển đổi base64 thành Bitmap
             Bitmap bitmap = decodeBase64(cat.getCatImage());
-            holder.imgCatImage.setImageBitmap(bitmap); // Set hình ảnh cho ImageView
+            holder.imgCatImage.setImageBitmap(bitmap);
         } else {
-            // Nếu không có ảnh, hiển thị hình mặc định
             holder.imgCatImage.setImageResource(R.drawable.t);
         }
 
@@ -88,14 +86,12 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.action_edit) {
-                            // Xử lý sửa mèo
                             if (listener != null) {
                                 listener.onEditCat(cat);
                             }
                             return true;
 
                         } else if (item.getItemId() == R.id.action_delete) {
-                            // Xử lý xóa mèo
                             if (listener != null) {
                                 listener.onDeleteCat(cat);
                             }
@@ -112,9 +108,6 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
             }
         });
     }
-    // Phương thức để chuyển Base64 thành Bitmap
-
-
 
     @Override
     public int getItemCount() {
@@ -134,7 +127,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.CatViewHolder> {
         }
     }
 
-    // Định nghĩa interface cho sự kiện xóa mèo
+
     public interface OnCatActionListener {
         void onDeleteCat(Cat cat);
         void onEditCat(Cat cat);

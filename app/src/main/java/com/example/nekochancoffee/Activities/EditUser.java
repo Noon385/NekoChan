@@ -29,7 +29,7 @@ public class EditUser extends AppCompatActivity {
     private Button btnEditUser;
 //    private ApiService apiService;
     UserAdapter adapter;
-    private User user; // Người dùng cần chỉnh sửa
+    private User user;
     ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
 
     @Override
@@ -37,7 +37,7 @@ public class EditUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
 
-        // Khởi tạo các thành phần giao diện
+
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
         rgRole = findViewById(R.id.rg_addstaff_Quyen);
@@ -51,18 +51,16 @@ public class EditUser extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
+                finish();
             }
         });
 
-        // Khởi tạo ApiService
+
 //        apiService = RetrofitClient.getClient("https://e8da-58-186-28-106.ngrok-free.app/").create(ApiService.class);
 
-        // Nhận dữ liệu người dùng từ intent
-        user = (User) getIntent().getSerializableExtra("user");
 
+        user = (User) getIntent().getSerializableExtra("user");
         if (user != null) {
-            // Hiển thị dữ liệu người dùng vào các trường
             txtUsername.setText(user.getUsername());
             txtPassword.setText(user.getPassword());
 
@@ -73,37 +71,31 @@ public class EditUser extends AppCompatActivity {
             }
         }
 
-        // Xử lý sự kiện khi nhấn nút sửa người dùng
         btnEditUser.setOnClickListener(v -> {
             updateUser();
         });
     }
 
     private void updateUser() {
-        // Lấy giá trị từ các trường nhập liệu
         String username = txtUsername.getText().toString().trim();
         String password = txtPassword.getText().toString().trim();
         String role = rdManager.isChecked() ? "Manager" : "Staff";
-
-        // Kiểm tra dữ liệu hợp lệ
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Cập nhật thông tin người dùng
         user.setUsername(username);
         user.setPassword(password);
         user.setRole(role);
 
-        // Gọi API để cập nhật người dùng
         apiService.updateUser(user.getId(), user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditUser.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
-                    finish(); // Đóng activity sau khi cập nhật thành công
+                    finish();
                 } else {
                     Toast.makeText(EditUser.this, "Cập nhật thất bại: " + response.message(), Toast.LENGTH_SHORT).show();
                 }

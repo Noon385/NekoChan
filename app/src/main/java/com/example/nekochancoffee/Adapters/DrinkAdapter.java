@@ -58,11 +58,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         holder.txtDrinkPrice.setText(drink.getDrink_price().toString() +" VND");
 
         if (drink.getDrink_image() != null && !drink.getDrink_image().isEmpty()) {
-            // Chuyển đổi base64 thành Bitmap
+
             Bitmap bitmap = decodeBase64(drink.getDrink_image());
-            holder.imgDrink.setImageBitmap(bitmap); // Set hình ảnh cho ImageView
+            holder.imgDrink.setImageBitmap(bitmap);
         } else {
-            // Nếu không có ảnh, hiển thị hình mặc định
             holder.imgDrink.setImageResource(R.drawable.t);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {

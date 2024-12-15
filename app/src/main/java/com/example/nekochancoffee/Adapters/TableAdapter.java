@@ -48,10 +48,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
         Table table = tableList.get(position);
-
-        // Set table attributes
         holder.txtTableName.setText(table.getTable_name());
-        // Handle image placeholder for table (if applicable)
         if("yes".equals(table.getTable_status())){
             holder.imgTableImage.setImageResource(R.drawable.table_seat);
         }else holder.imgTableImage.setImageResource(R.drawable.table_coffee);
@@ -112,12 +109,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
             imgOrder = itemView.findViewById(R.id.imgOrder);
             imgPayment = itemView.findViewById(R.id.imgPayment);
             imgDetail = itemView.findViewById(R.id.imgDetail);
-            imgTableImage = itemView.findViewById(R.id.imgTable); // status
+            imgTableImage = itemView.findViewById(R.id.imgTable);
             btnAddTable = itemView.findViewById(R.id.btnAddTable);
         }
     }
 
-    // Interface for table actions
     public interface OnTableActionListener {
         void onDeleteTable(Table table);
         void onEditTable(Table table);

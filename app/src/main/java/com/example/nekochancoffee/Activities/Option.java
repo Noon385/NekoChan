@@ -50,12 +50,9 @@ public class Option extends AppCompatActivity {
         String username = sharedPreferences.getString("username","");
         txtUsername.setText("Xin chào "+username.toString());
 
-        // Kiểm tra vai trò của người dùng
         if (role.equals("manager")) {
-            // Hiển thị các chức năng cho quản lý
             showManagerFeatures();
         } else if (role.equals("staff")) {
-            // Hiển thị các chức năng cho nhân viên
             showStaffFeatures();
         }
 
@@ -95,7 +92,7 @@ public class Option extends AppCompatActivity {
         cardLogout.setOnClickListener(v -> {
 
             Intent intent = new Intent(Option.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa ngăn xếp và mở LoginActivity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });

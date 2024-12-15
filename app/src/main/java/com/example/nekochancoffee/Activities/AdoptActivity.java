@@ -51,10 +51,10 @@ public class AdoptActivity extends AppCompatActivity {
         recyclerViewAdopt =findViewById(R.id.recyclerViewAdopt);
         btnAddAdopt = findViewById(R.id.btnAddAdopt);
 
-        // Load adopted cats
+
         loadAdoptData();
         btnAddAdopt.setOnClickListener(v -> {
-            // Điều hướng đến Activity thêm người dùng (nếu có)
+
             startActivity(new Intent(AdoptActivity.this,AddAdopt.class));
         });
     }

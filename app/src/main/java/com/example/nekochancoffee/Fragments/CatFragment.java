@@ -43,11 +43,8 @@ public class CatFragment extends Fragment {
 
         recyclerViewCats = rootView.findViewById(R.id.recyclerViewCats);
         btnAddcat = rootView.findViewById(R.id.btnAddCat);
-
-        // Khởi tạo danh sách mèo
         catList = new ArrayList<>();
 
-        // Thiết lập RecyclerView
         catAdapter = new CatAdapter(getContext(), catList, new CatAdapter.OnCatActionListener() {
             @Override
             public void onDeleteCat(Cat cat) {
@@ -73,8 +70,6 @@ public class CatFragment extends Fragment {
 
         recyclerViewCats.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewCats.setAdapter(catAdapter);
-
-        // Lấy danh sách mèo từ API
         getCats();
 
         return rootView;
@@ -85,7 +80,6 @@ public class CatFragment extends Fragment {
         getCats();
     }
 
-    // Hàm lấy danh sách mèo từ API
     private void getCats() {
 //        ApiService apiService = RetrofitClient.getClient("https://200f-1-52-23-183.ngrok-free.app/").create(ApiService.class);
 

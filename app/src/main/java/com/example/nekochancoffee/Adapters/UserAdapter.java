@@ -56,7 +56,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.tvRole.setText("Chức vụ: "+user.getRole());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, UserDetail.class);
-            intent.putExtra("user", user); // Assuming User class implements Serializable or Parcelable
+            intent.putExtra("user", user);
             context.startActivity(intent);
         });
 
@@ -70,14 +70,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.action_edit) {
-                            // Xử lý sửa mèo
+
                             if (listener != null) {
                                 listener.onEditUser(user);
                             }
                             return true;
 
                         } else if (item.getItemId() == R.id.action_delete) {
-                            // Xử lý xóa mèo
+
                             if (listener != null) {
                                 listener.onDeleteUser(user);
                             }
@@ -145,7 +145,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         });
     }
 
-    // Cập nhật thông tin người dùng
     public void updateUser(User user) {
         userApi.updateUser(user.getId(), user).enqueue(new Callback<User>() {
             @Override
@@ -158,31 +157,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                // Xử lý khi yêu cầu thất bại
             }
         });
     }
 
     // Xóa người dùng
     public void deleteUser(int userId, int position) {
-        // Gọi API để xóa người dùng
         userApi.deleteUser(userId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Xóa người dùng khỏi danh sách và cập nhật giao diện
                     userList.remove(position);
                     notifyItemRemoved(position);
                     Toast.makeText(context, "Người dùng đã được xóa thành công!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Hiển thị thông báo nếu yêu cầu không thành công
                     Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Thông báo lỗi khi yêu cầu thất bại
                 Toast.makeText(context, "Lỗi khi xóa người dùng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

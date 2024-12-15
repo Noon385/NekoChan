@@ -65,23 +65,20 @@ public class AddCustomer extends AppCompatActivity {
         String customerName = txtName.getText().toString().trim();
         String customerPhone = txtPhone.getText().toString().trim();
 
-
-        // Kiểm tra xem username và password có trống hay không
         if (customerName.isEmpty() || customerPhone.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Tạo đối tượng User
         Customer newCustomer = new Customer();
         newCustomer.setCustomer_name(customerName);
         newCustomer.setCustomer_phone(customerPhone);
 
-        // Gọi hàm thêm người dùng từ adapter
+
         adapter.addCustomer(newCustomer);
         adapter.notifyDataSetChanged();
 
-        // Đóng activity sau khi thêm người dùng
-        finish(); // Quay về màn hình trước
+
+        finish();
     }
 }

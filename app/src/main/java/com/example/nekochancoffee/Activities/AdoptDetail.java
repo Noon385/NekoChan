@@ -44,11 +44,11 @@ public class AdoptDetail extends AppCompatActivity {
 
 
         if (adopt.getCat_image() != null && !adopt.getCat_image().isEmpty()) {
-            // Chuyển đổi base64 thành Bitmap
+
             Bitmap bitmap = decodeBase64(adopt.getCat_image());
-            imgAdopt.setImageBitmap(bitmap); // Set hình ảnh cho ImageView
+            imgAdopt.setImageBitmap(bitmap);
         } else {
-            // Nếu không có ảnh, hiển thị hình mặc định
+
             imgAdopt.setImageResource(R.drawable.t);
         }
     }

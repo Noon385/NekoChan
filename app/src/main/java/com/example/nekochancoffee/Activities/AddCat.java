@@ -98,12 +98,12 @@ public class AddCat extends AppCompatActivity {
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
         MultipartBody.Part cat_image = MultipartBody.Part.createFormData("cat_image", imageFile.getName(), requestFile);
 
-        // Tạo RequestBody cho các trường khác
+
         RequestBody cat_name = RequestBody.create(MediaType.parse("text/plain"), catName);
         RequestBody cat_status = RequestBody.create(MediaType.parse("text/plain"), catStatus);
 //        RequestBody cat_price = RequestBody.create(MediaType.parse("text/plain"), catPrice);
 
-        // Gọi API
+
 
         Call<Void> call = apiService.addCat(cat_name, cat_status, cat_image);
 

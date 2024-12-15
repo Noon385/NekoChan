@@ -74,11 +74,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         recyclerViewCategory.setAdapter(adapter);
         recyclerViewCategory.setLayoutManager(new GridLayoutManager(this,3));
-
-        // Tải danh sách ban đầu
         loadCategoryList();
 
-        // Xử lý khi nhấn nút thêm loại món
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +111,6 @@ public class CategoryActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(CategoryActivity.this, "Loại món đã bị xóa", Toast.LENGTH_SHORT).show();
-                    // Tải lại danh sách loại món sau khi xóa thành công
                     loadCategoryList();
                 } else {
                     Toast.makeText(CategoryActivity.this, "Xóa loại món thất bại", Toast.LENGTH_SHORT).show();

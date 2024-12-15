@@ -51,8 +51,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
-
-        // Thiết lập các thông tin đơn hàng
         holder.txtOrderId.setText("Order ID: " + order.getOrder_id());
         holder.txtTableName.setText("Bàn số: " + order.getTable_name());
         holder.txtCustomerName.setText("Khách hàng: " + order.getCustomer_name());

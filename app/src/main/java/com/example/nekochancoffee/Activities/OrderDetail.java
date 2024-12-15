@@ -200,20 +200,19 @@ public class OrderDetail extends AppCompatActivity {
         payment.setOrder_id(orderdetail.getOrder_id());
         payment.setTotal_price(totalPrice);
 
-        // Thực hiện thanh toán MoMo
-        apiService.payment(payment).enqueue(new Callback<JsonObject>() {  // Sửa thành JsonObject để nhận kết quả trả về
+
+        apiService.payment(payment).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    // Lấy URL thanh toán từ JSON trả về
+
                     JsonObject responseBody = response.body();
                     String payUrl = responseBody.get("payUrl").getAsString();
 
-                    // Mở WebView để thanh toán
+
                     webViewPayment.setVisibility(View.VISIBLE);
                     webViewPayment.loadUrl(payUrl);
 
-                    // Cập nhật trạng thái đơn hàng sau khi thanh toán
                     Order order_status = new Order();
                     order_status.setOrder_status("yes");
                     int points = calculatePoints(totalPrice);
@@ -245,7 +244,7 @@ public class OrderDetail extends AppCompatActivity {
     }
 
 
-    // Phương thức cập nhật trạng thái đơn hàng và điểm khách hàng
+
     private void updateOrderStatus(int orderId, Order orderStatus, int points) {
         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
@@ -281,7 +280,7 @@ public class OrderDetail extends AppCompatActivity {
             }
         });
     }
-    // Phương thức tính điểm từ tổng giá trị
+
     private int calculatePoints(BigDecimal totalPrice) {
         BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
         return points.intValue();

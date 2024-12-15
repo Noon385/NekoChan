@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class CustomerActivity extends AppCompatActivity {
     private FloatingActionButton btnAddCustomer;
     private RecyclerView recyclerViewCustomers;
-//    private ApiService apiService;
+
 
     ApiService apiService  = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
     @Override

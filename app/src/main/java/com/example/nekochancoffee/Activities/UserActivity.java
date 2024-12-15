@@ -40,19 +40,14 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnUse
 
         recyclerView = findViewById(R.id.recyclerViewUsers);
         fabAddUser = findViewById(R.id.fabAddUser);
-
-        // Configure RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Fetch user list from the API
         getAllUsers();
 
-        // Add user button
         fabAddUser.setOnClickListener(v -> {
             startActivity(new Intent(UserActivity.this, AddUser.class));
         });
 
-        // Set up toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -78,7 +73,6 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnUse
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                // Handle failure to retrieve data
             }
         });
     }

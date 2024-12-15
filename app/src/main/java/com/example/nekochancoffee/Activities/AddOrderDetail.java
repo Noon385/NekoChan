@@ -44,7 +44,7 @@ public class AddOrderDetail extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
+                finish();
             }
         });
 
@@ -55,14 +55,14 @@ public class AddOrderDetail extends AppCompatActivity {
         btnAddOrder = findViewById(R.id.btnAddOrder);
         txtOrderId = findViewById(R.id.txtOrderId);
 
-        // Nhận Order và Drink từ Intent
+
         order = (Order) getIntent().getSerializableExtra("order");
         drink = (Drink) getIntent().getSerializableExtra("drink");
 
         txtOrderId.setText("Order ID : " + order.getOrder_id());
         txtDrinkName.setText(drink.getDrink_name());
 
-        // Hiển thị ảnh đồ uống
+
         if (drink.getDrink_image() != null && !drink.getDrink_image().isEmpty()) {
             Bitmap bitmap = decodeBase64(drink.getDrink_image());
             imgDrink.setImageBitmap(bitmap);
@@ -70,7 +70,7 @@ public class AddOrderDetail extends AppCompatActivity {
             imgDrink.setImageResource(R.drawable.ic_food);
         }
 
-        // Khi nhấn nút thêm đơn hàng
+
         btnAddOrder.setOnClickListener(v -> {
             addOrderDetail();
             finish();
@@ -95,7 +95,7 @@ public class AddOrderDetail extends AppCompatActivity {
         int amount = Integer.parseInt(amountStr);
         BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
 
-        // Tạo đối tượng OrderDetail
+
         Order orderDetail = new Order();
         orderDetail.setOrder_id(order.getOrder_id());
         orderDetail.setDrink_id(drink.getDrink_id());

@@ -149,10 +149,9 @@ public class EditCategory extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditCategory.this, "Sửa loại món thành công!", Toast.LENGTH_SHORT).show();
 
-                    finish(); // Quay về màn hình trước
+                    finish();
                 } else {
                     try {
-                        // Lấy nội dung lỗi từ errorBody và chuyển thành chuỗi
                         String errorBody = response.errorBody().string();
                         Log.d("EditCat", "Error body: " + errorBody);
                         Toast.makeText(EditCategory.this, "Sửa mèo thất bại! Lỗi: " + errorBody, Toast.LENGTH_LONG).show();

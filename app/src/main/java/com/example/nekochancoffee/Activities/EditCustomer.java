@@ -52,14 +52,13 @@ public class EditCustomer extends AppCompatActivity {
         customer = (Customer) getIntent().getSerializableExtra("customer");
 
         if (customer != null) {
-            // Hiển thị dữ liệu người dùng vào các trường
             txtName.setText(customer.getCustomer_name());
             txtPhone.setText(customer.getCustomer_phone());
             txtPoint.setText(customer.getCustomer_point());
 
         }
 
-        // Xử lý sự kiện khi nhấn nút sửa người dùng
+
         btnEditCustomer.setOnClickListener(v -> {
             updateCustomer();
             //adapter.notifyDataSetChanged();
@@ -67,12 +66,12 @@ public class EditCustomer extends AppCompatActivity {
         });
     }
     private void updateCustomer() {
-        // Lấy giá trị từ các trường nhập liệu
+
         String name = txtName.getText().toString().trim();
         String phone = txtPhone.getText().toString().trim();
         String point = txtPoint.getText().toString().trim();
 
-        // Kiểm tra dữ liệu hợp lệ
+
         if (name.isEmpty() || phone.isEmpty() || point.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
@@ -83,14 +82,14 @@ public class EditCustomer extends AppCompatActivity {
         customer.setCustomer_point(point);
 //        ApiService apiService = RetrofitClient.getClient("https://e8da-58-186-28-106.ngrok-free.app/").create(ApiService.class);
 
-        // Gọi API để cập nhật người dùng
+
         apiService.updateCustomer(customer.getCustomer_id(), customer).enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(Call<Customer> call, Response<Customer> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditCustomer.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
-                    finish(); // Đóng activity sau khi cập nhật thành công
+                    finish();
                 } else {
                     Toast.makeText(EditCustomer.this, "Cập nhật thất bại: " + response.message(), Toast.LENGTH_SHORT).show();
                 }

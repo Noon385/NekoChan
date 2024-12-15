@@ -49,7 +49,6 @@ public class EditAdopt extends AppCompatActivity {
             }
         });
 
-        // Lấy thông tin nhận nuôi từ Intent
         adopt = (Adopt) getIntent().getSerializableExtra("adopt");
 
         loadCats();
@@ -103,7 +102,7 @@ public class EditAdopt extends AppCompatActivity {
                     customerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerCustomer.setAdapter(customerAdapter);
 
-                    // Chọn khách hàng hiện tại
+
                     for (int i = 0; i < customerList.size(); i++) {
                         if (customerList.get(i).getCustomer_id() == adopt.getCustomer_id()) {
                             spinnerCustomer.setSelection(i);
@@ -128,9 +127,9 @@ public class EditAdopt extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditAdopt.this, "Cập nhật thông tin nhận nuôi thành công!", Toast.LENGTH_SHORT).show();
-                    finish(); // Đóng Activity
+                    finish();
                 } else {
-                    // Nếu có lỗi, hiển thị thông báo cho người dùng
+
                     String errorMessage = "Không thể cập nhật thông tin nhận nuôi!";
                     Toast.makeText(EditAdopt.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }

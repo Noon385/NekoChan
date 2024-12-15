@@ -27,11 +27,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private List<Category> categoryList;
     private OnCategoryActionListener listener;
 
-    // Constructor
     public CategoryAdapter(Context context, List<Category> categoryList, OnCategoryActionListener listener) {
         this.context = context;
         this.categoryList = categoryList;
-        this.listener = listener; // Khởi tạo listener
+        this.listener = listener;
     }
     public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
@@ -39,7 +38,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     }
 
-    // ViewHolder class to hold individual category items
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         public TextView categoryName;
         public ImageView categoryImage;
@@ -61,17 +59,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        // Get the current category
         Category category = categoryList.get(position);
-        // Set the category name
         holder.categoryName.setText(category.getCategory_name());
-        // Load the category image using Picasso (assuming it's a URL or a base64 string)
         if (category.getCategory_image() != null && !category.getCategory_image().isEmpty()) {
-            // Chuyển đổi base64 thành Bitmap
             Bitmap bitmap = decodeBase64(category.getCategory_image());
-            holder.categoryImage.setImageBitmap(bitmap); // Set hình ảnh cho ImageView
+            holder.categoryImage.setImageBitmap(bitmap);
         } else {
-            // Nếu không có ảnh, hiển thị hình mặc định
             holder.categoryImage.setImageResource(R.drawable.t);
         }
 
@@ -79,8 +72,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DrinkActivity.class);
-                intent.putExtra("category_id", category.getCategory_id()); // Pass the category ID to DrinkActivity
-                context.startActivity(intent); // Start DrinkActivity
+                intent.putExtra("category_id", category.getCategory_id());
+                context.startActivity(intent);
             }
         });
 
@@ -119,11 +112,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public int getItemCount() {
         return categoryList.size();
     }
-
-    // Update the category list
     public void updateCategories(List<Category> newCategories) {
         this.categoryList = newCategories;
-        notifyDataSetChanged(); // Thêm notifyDataSetChanged() để cập nhật danh sách
+        notifyDataSetChanged();
     }
 
     public interface OnCategoryActionListener {

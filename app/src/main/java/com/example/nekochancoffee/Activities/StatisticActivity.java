@@ -65,17 +65,16 @@ public class StatisticActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize views
+
         startDate = findViewById(R.id.startDate);
         endDate = findViewById(R.id.endDate);
         btnFilter = findViewById(R.id.btnFilter);
         spinnerStatistic = findViewById(R.id.spinnerStatistic);
         chart = findViewById(R.id.chart);
 
-        // Setup chart
+
         setupChart(chart);
 
-        // Set DatePicker for EditTexts
         setupDatePicker(startDate);
         setupDatePicker(endDate);
 
@@ -85,16 +84,13 @@ public class StatisticActivity extends AppCompatActivity {
         statisticOptions.add("Mèo được ưa thích");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, statisticOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // Áp dụng layout sẵn có cho danh sách dropdown
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatistic.setAdapter(adapter);
 
-        // Button filter logic
         spinnerStatistic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = parent.getItemAtPosition(position).toString();
-
-                // Xử lý logic dựa trên lựa chọn
                 btnFilter.setOnClickListener(v -> {
                     String start = startDate.getText().toString();
                     String end = endDate.getText().toString();

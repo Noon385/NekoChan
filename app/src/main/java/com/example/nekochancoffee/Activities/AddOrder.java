@@ -106,7 +106,7 @@ public class AddOrder extends AppCompatActivity {
 //        BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
 //        txtTotal.setText(total.toString());
 
-        // Set button click listener to add the order
+
         btnAddOrder.setOnClickListener(v -> {
             String catName = ((Cat) spinnerCat.getSelectedItem()).getCatName();
             String tableName = ((Table) spinnerTable.getSelectedItem()).getTable_name();
@@ -157,14 +157,14 @@ public class AddOrder extends AppCompatActivity {
 //            order.setUsername(username);
 //            order.setDrink_name(drink.getDrink_name());
 
-            // Make API call to add order
+
             apiService.addOrder(order).enqueue(new Callback<OrderResponse>() {
                 @Override
                 public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         int orderId = response.body().getorder_id();
 
-                        // Kiểm tra nếu orderId hợp lệ
+
                         if (orderId != 0) {
                             Toast.makeText(AddOrder.this, "Order added successfully! Order ID: " + orderId, Toast.LENGTH_SHORT).show();
                             Table table = new Table();

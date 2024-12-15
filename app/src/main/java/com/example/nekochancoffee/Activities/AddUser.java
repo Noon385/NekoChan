@@ -46,7 +46,7 @@ public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActi
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        // Initialize the adapter with an empty user list and ApiService
+
         adapter = new UserAdapter(userList, this, apiService, this);
 
         btnAddUser.setOnClickListener(v -> addUser());
@@ -56,7 +56,7 @@ public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActi
         String username = txtUsername.getText().toString().trim();
         String password = txtPassword.getText().toString().trim();
 
-        // Check if the role is selected
+
         String role;
         if (rdManager.isChecked()) {
             role = "manager";
@@ -73,13 +73,13 @@ public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActi
             return;
         }
 
-        // Create a new User object
+
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setRole(role);
 
-        // Use ApiService to add a new user
+
         apiService.addUser(newUser).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -102,11 +102,11 @@ public class AddUser extends AppCompatActivity implements UserAdapter.OnUserActi
 
     @Override
     public void onEditUser(User user) {
-        // No action needed for adding users
+
     }
 
     @Override
     public void onDeleteUser(User user) {
-        // No action needed for adding users
+
     }
 }

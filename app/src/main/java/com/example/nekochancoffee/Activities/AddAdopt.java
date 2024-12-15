@@ -46,14 +46,14 @@ public class AddAdopt extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
+                finish();
             }
         });
 
         loadCats();
         loadCustomers();
 
-        // Xử lý khi bấm nút Thêm nhận nuôi
+
         btnAddAdopt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class AddAdopt extends AppCompatActivity {
         });
     }
 
-    // Load danh sách mèo từ API vào Spinner
+
     private void loadCats() {
 //        ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
         apiService.getCatsAtStore().enqueue(new Callback<List<Cat>>() {
@@ -87,7 +87,7 @@ public class AddAdopt extends AppCompatActivity {
         });
     }
 
-    // Load danh sách khách hàng từ API vào Spinner
+
     private void loadCustomers() {
 //        ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
         apiService.getCustomers().enqueue(new Callback<List<Customer>>() {
@@ -111,7 +111,7 @@ public class AddAdopt extends AppCompatActivity {
     }
 
 
-    // Gọi API để thêm thông tin nhận nuôi
+
     private void addAdopt(int catId, int customerId) {
 //        ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
         Call<Void> call = apiService.addAdopt(catId, customerId);

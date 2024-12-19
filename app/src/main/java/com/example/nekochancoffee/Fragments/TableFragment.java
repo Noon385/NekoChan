@@ -42,7 +42,7 @@ public class TableFragment extends Fragment {
     private TableAdapter tableAdapter;
     private WebView webViewPayment;
     private List<Table> tableList;
-    ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -237,7 +237,6 @@ private void PaymentByCash(Table table) {
     });
 }
 
-
     private void PaymentByMomo(Table table) {
         int table_id = table.getTable_id(); // Lấy ID bàn
         apiService.getOrderByTableId(table_id).enqueue(new Callback<List<Order>>() {
@@ -309,9 +308,6 @@ private void PaymentByCash(Table table) {
             }
         });
     }
-
-
-
 
     private void updateOrderStatus(int orderId, Order orderStatus, int points) {
         // Gửi yêu cầu cập nhật trạng thái đơn hàng

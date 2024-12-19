@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 public class StatisticActivity extends AppCompatActivity {
 
-    ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
     private EditText startDate, endDate;
     private Button btnFilter;
     private Spinner spinnerStatistic;

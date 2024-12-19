@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +45,7 @@ public class AddOrder extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Drink drink;
     private final static int req =123;
-    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,11 @@ public class AddOrder extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Trở về Activity trước đó
+                finish();
             }
         });
 
-        // Initialize views
+
         imgDrink = findViewById(R.id.imgDrink);
         spinnerTable = findViewById(R.id.spinnerTable);
         spinnerCat = findViewById(R.id.spinnerCat);
@@ -73,12 +75,12 @@ public class AddOrder extends AppCompatActivity {
         drink = (Drink) getIntent().getSerializableExtra("drink");
 
         if (drink != null) {
-            txtDrinkName.setText(drink.getDrink_name()); // Set drink name
+            txtDrinkName.setText(drink.getDrink_name());
             if (drink.getDrink_image() != null && !drink.getDrink_image().isEmpty()) {
                 Bitmap bitmap = decodeBase64(drink.getDrink_image());
-                imgDrink.setImageBitmap(bitmap); // Set drink image
+                imgDrink.setImageBitmap(bitmap);
             } else {
-                imgDrink.setImageResource(R.drawable.t); // Default image
+                imgDrink.setImageResource(R.drawable.t);
             }
         }
         imgDrink.setOnClickListener(new View.OnClickListener() {
@@ -101,31 +103,31 @@ public class AddOrder extends AppCompatActivity {
         loadCustomers();
         loadTables();
 
+        txtAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-//        int amount = Integer.parseInt(txtAmount.getText().toString());
-//        BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
-//        txtTotal.setText(total.toString());
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateTotal();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
 
         btnAddOrder.setOnClickListener(v -> {
-            String catName = ((Cat) spinnerCat.getSelectedItem()).getCatName();
-            String tableName = ((Table) spinnerTable.getSelectedItem()).getTable_name();
-            String customerName = ((Customer) spinnerCustomer.getSelectedItem()).getCustomer_name();
-
-            int catId = ((Cat) spinnerCat.getSelectedItem()).getCatId();
-            int tableId = ((Table) spinnerTable.getSelectedItem()).getTable_id();
-            int customerId = ((Customer) spinnerCustomer.getSelectedItem()).getCustomer_id();
-
-
             String amountText = txtAmount.getText().toString().trim();
             if (amountText.isEmpty()) {
                 Toast.makeText(AddOrder.this, "amount null", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             int amount;
             try {
-                amount = Integer.parseInt(amountText); 
+                amount = Integer.parseInt(amountText);
             } catch (NumberFormatException e) {
                 Toast.makeText(AddOrder.this, "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
                 return;
@@ -134,124 +136,94 @@ public class AddOrder extends AppCompatActivity {
             BigDecimal total = BigDecimal.valueOf(drink.getDrink_price().doubleValue() * amount);
             txtTotal.setText(total.toString());
 
-            // order
-            Order order = new Order();
-            order.setTable_id(tableId);
-            order.setCat_id(catId);
-            order.setCustomer_id(customerId);
-            order.setUser_id(userId);
-            // order detail
-            Order orderdetail =new Order();
-            orderdetail.setDrink_id(drink.getDrink_id());
-            orderdetail.setAmount(amount);
-            orderdetail.setTotal(total);
-
-
-
-//            order.setDrink_id(drink.getDrink_id());
-//            order.setAmount(amount);
-//            order.setTotal(total);
-//            order.setTable_name(tableName);
-//            order.setCat_name(catName);
-//            order.setCustomer_name(customerName);
-//            order.setUsername(username);
-//            order.setDrink_name(drink.getDrink_name());
-
-
-            apiService.addOrder(order).enqueue(new Callback<OrderResponse>() {
-                @Override
-                public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        int orderId = response.body().getorder_id();
-
-
-                        if (orderId != 0) {
-                            Toast.makeText(AddOrder.this, "Order added successfully! Order ID: " + orderId, Toast.LENGTH_SHORT).show();
-                            Table table = new Table();
-                            table.setTable_status("yes");
-                            apiService.updateTableStatus(order.getTable_id(),table).enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-                                    Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-//
-                            orderdetail.setOrder_id(orderId);
-                            apiService.addOrderDetail(orderdetail).enqueue(new Callback<Order>() {
-                                @Override
-                                public void onResponse(Call<Order> call, Response<Order> response) {
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(AddOrder.this, "Order detail added successfully!", Toast.LENGTH_SHORT).show();
-
-
-                                    } else {
-                                        Toast.makeText(AddOrder.this, "Failed to add order detail", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Order> call, Throwable t) {
-                                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            Toast.makeText(AddOrder.this, "Failed to retrieve valid order ID", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(AddOrder.this, "Failed to add order", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<OrderResponse> call, Throwable t) {
-                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-
-
-//            apiService.addOrderDetail(orderdetail).enqueue(new Callback<Order>() {
-//                @Override
-//                public void onResponse(Call<Order> call, Response<Order> response) {
-//                    if (response.isSuccessful()) {
-//                        Toast.makeText(AddOrder.this, "Order added successfully!", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(AddOrder.this, "Failed to add order"+userId, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Order> call, Throwable t) {
-//                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            finish();
-
-//
-//            apiService.addOrder(order).enqueue(new Callback<Order>() {
-//                @Override
-//                public void onResponse(Call<Order> call, Response<Order> response) {
-//                    if (response.isSuccessful()) {
-//                        int orderId =response.body().getOrder_id();
-//                        orderdetail.setOrder_id(orderId);
-//                        Toast.makeText(AddOrder.this, "Order added successfully!", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(AddOrder.this, "Failed to add order"+userId, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Order> call, Throwable t) {
-//                    Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
+            addOrder(amount, total, userId);
             finish();
+        });
+
+    }
+    private void updateTotal() {
+        String amountText = txtAmount.getText().toString().trim();
+        if (amountText.isEmpty()) {
+            txtTotal.setText("0");
+            return;
+        }
+
+        try {
+            int amount = Integer.parseInt(amountText);
+            BigDecimal price = drink != null ? drink.getDrink_price() : BigDecimal.ZERO;
+            BigDecimal total = price.multiply(BigDecimal.valueOf(amount));
+            txtTotal.setText(total.toString() +" VND");
+        } catch (NumberFormatException e) {
+            txtTotal.setText("0");
+        }
+    }
+    private void addOrder(int amount, BigDecimal total, int userId) {
+        int catId = ((Cat) spinnerCat.getSelectedItem()).getCatId();
+        int tableId = ((Table) spinnerTable.getSelectedItem()).getTable_id();
+        int customerId = ((Customer) spinnerCustomer.getSelectedItem()).getCustomer_id();
+
+        Order order = new Order();
+        order.setTable_id(tableId);
+        order.setCat_id(catId);
+        order.setCustomer_id(customerId);
+        order.setUser_id(userId);
+
+        Order orderDetail = new Order();
+        orderDetail.setDrink_id(drink.getDrink_id());
+        orderDetail.setAmount(amount);
+        orderDetail.setTotal(total);
+
+        apiService.addOrder(order).enqueue(new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    int orderId = response.body().getorder_id();
+                    if (orderId != 0) {
+                        Toast.makeText(AddOrder.this, "Order added successfully! Order ID: " + orderId, Toast.LENGTH_SHORT).show();
+
+                        Table table = new Table();
+                        table.setTable_status("yes");
+                        apiService.updateTableStatus(order.getTable_id(), table).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(AddOrder.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        orderDetail.setOrder_id(orderId);
+                        apiService.addOrderDetail(orderDetail).enqueue(new Callback<Order>() {
+                            @Override
+                            public void onResponse(Call<Order> call, Response<Order> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(AddOrder.this, "Order detail added successfully!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(AddOrder.this, "Failed to add order detail", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Order> call, Throwable t) {
+                                Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(AddOrder.this, "Failed to retrieve valid order ID", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AddOrder.this, "Failed to add order", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                Toast.makeText(AddOrder.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
     private Bitmap decodeBase64(String base64Str) {
@@ -280,7 +252,7 @@ public class AddOrder extends AppCompatActivity {
         });
     }
 
-    // Load danh sách khách hàng từ API vào Spinner
+
     private void loadCustomers() {
 //        ApiService apiService = RetrofitClient.getClient("https://72ec-58-186-28-106.ngrok-free.app/").create(ApiService.class);
         apiService.getCustomers().enqueue(new Callback<List<Customer>>() {

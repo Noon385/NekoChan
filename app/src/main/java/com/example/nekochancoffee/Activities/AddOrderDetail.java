@@ -3,6 +3,8 @@ package com.example.nekochancoffee.Activities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ public class AddOrderDetail extends AppCompatActivity {
     private Button btnAddOrder;
     private Order order;
     private Drink drink;
-    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -70,6 +72,20 @@ public class AddOrderDetail extends AppCompatActivity {
             imgDrink.setImageResource(R.drawable.ic_food);
         }
 
+        txtAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateTotal();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         btnAddOrder.setOnClickListener(v -> {
             addOrderDetail();
@@ -83,7 +99,22 @@ public class AddOrderDetail extends AppCompatActivity {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
+    private void updateTotal() {
+        String amountText = txtAmount.getText().toString().trim();
+        if (amountText.isEmpty()) {
+            txtTotal.setText("0");
+            return;
+        }
 
+        try {
+            int amount = Integer.parseInt(amountText);
+            BigDecimal price = drink != null ? drink.getDrink_price() : BigDecimal.ZERO;
+            BigDecimal total = price.multiply(BigDecimal.valueOf(amount));
+            txtTotal.setText(total.toString() +" VND");
+        } catch (NumberFormatException e) {
+            txtTotal.setText("0");
+        }
+    }
 
     private void addOrderDetail() {
         String amountStr = txtAmount.getText().toString();

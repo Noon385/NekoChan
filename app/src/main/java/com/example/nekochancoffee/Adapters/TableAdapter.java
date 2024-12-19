@@ -61,10 +61,29 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
             context.startActivity(intent);
         });
         holder.imgPayment.setOnClickListener(v -> {
-            Intent intent = new Intent(context, OrderActivity.class);
-            intent.putExtra("tableId", table.getTable_id());
-            intent.putExtra("tableStatus","no");
-            context.startActivity(intent);
+//            Intent intent = new Intent(context, OrderActivity.class);
+//            intent.putExtra("tableId", table.getTable_id());
+//            intent.putExtra("tableStatus","no");
+//            context.startActivity(intent);
+
+            PopupMenu popupMenu = new PopupMenu(context, holder.itemView);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_payment_table, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (listener != null) {
+                    if (item.getItemId() == R.id.momo) {
+                        listener.onMomoPayment(table);
+                        return true;
+                    } else if (item.getItemId() == R.id.cash) {
+                        listener.onCashPayment(table);
+                        return true;
+                    }
+                }
+                return false;
+            });
+            popupMenu.show();
+//            return true;
+
         });
         holder.imgDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, TableDetail.class);
@@ -117,5 +136,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
     public interface OnTableActionListener {
         void onDeleteTable(Table table);
         void onEditTable(Table table);
+        void onCashPayment(Table table);
+        void onMomoPayment(Table table);
     }
 }

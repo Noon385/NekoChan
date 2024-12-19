@@ -31,7 +31,7 @@ public class AddOrderDetail extends AppCompatActivity {
     private Button btnAddOrder;
     private Order order;
     private Drink drink;
-    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
 
     @Override

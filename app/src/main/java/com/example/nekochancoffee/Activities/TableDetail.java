@@ -37,7 +37,7 @@ public class TableDetail extends AppCompatActivity {
     private OrderDetailAdapter adapter;
     private Button btnPaymentByCash, btnPaymentByMomo;
     private WebView webViewPayment;
-    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -64,8 +64,8 @@ public class TableDetail extends AppCompatActivity {
         txtTotal = findViewById(R.id.txtTotal);
         orderTime  =findViewById(R.id.orderTime);
         recyclerViewDrink = findViewById(R.id.recyclerViewDrink);
-        btnPaymentByCash = findViewById(R.id.btnPaymentByCash);
-        btnPaymentByMomo = findViewById(R.id.btnPaymentByMomo);
+//        btnPaymentByCash = findViewById(R.id.btnPaymentByCash);
+//        btnPaymentByMomo = findViewById(R.id.btnPaymentByMomo);
 //        btnAddOrderDetail = findViewById(R.id.btnAddOrderDetail);
 
         recyclerViewDrink.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -75,134 +75,133 @@ public class TableDetail extends AppCompatActivity {
             loadOrder(table_id);
         }
 
-        btnPaymentByCash.setOnClickListener(v -> {
-            PaymentByCash();
-
-        });
-        btnPaymentByMomo.setOnClickListener(v -> {
-            PaymentByMomo();
-
-        });
+//        btnPaymentByCash.setOnClickListener(v -> {
+//            PaymentByCash();
+//
+//        });
+//        btnPaymentByMomo.setOnClickListener(v -> {
+//            PaymentByMomo();
+//
+//        });
 
     }
-    private void PaymentByCash() {
-
-        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
-        Order order_status = new Order();
-        order_status.setOrder_status("yes");
-
-        BigDecimal totalPrice = orderdetail.getTotal_price();
-        int points = calculatePoints(totalPrice); // Tính điểm khách hàng
-
-        // Cập nhật trạng thái đơn hàng
-        updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
-        Table table = new Table();
-        table.setTable_status("no");
-        apiService.updateTableStatus(orderdetail.getTable_id(),table).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thành công" + orderdetail.getTable_id(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void PaymentByMomo() {
-
-        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
-        BigDecimal totalPrice = orderdetail.getTotal_price();
-        Payment payment = new Payment();
-        payment.setOrder_id(orderdetail.getOrder_id());
-        payment.setTotal_price(totalPrice);
-
-        // Thực hiện thanh toán MoMo
-        apiService.payment(payment).enqueue(new Callback<JsonObject>() {  // Sửa thành JsonObject để nhận kết quả trả về
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    // Lấy URL thanh toán từ JSON trả về
-                    JsonObject responseBody = response.body();
-                    String payUrl = responseBody.get("payUrl").getAsString();
-
-                    // Mở WebView để thanh toán
-                    webViewPayment.setVisibility(View.VISIBLE);
-                    webViewPayment.loadUrl(payUrl);
-
-                    // Cập nhật trạng thái đơn hàng sau khi thanh toán
-                    Order order_status = new Order();
-                    order_status.setOrder_status("yes");
-                    int points = calculatePoints(totalPrice);
-                    updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
-                    Table table = new Table();
-                    table.setTable_status("no");
-                    apiService.updateTableStatus(order_status.getTable_id(),table).enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Toast.makeText(TableDetail.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(TableDetail.this, "Lỗi kết nối khi thanh toán", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void updateOrderStatus(int orderId, Order orderStatus, int points) {
-        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
-        apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(TableDetail.this, "Cập nhật trạng thái đơn hàng thành công", Toast.LENGTH_SHORT).show();
-
-                    // Cập nhật điểm cho khách hàng
-                    Customer customer = new Customer();
-                    customer.setCustomer_point(String.valueOf(points));
-                    apiService.updateCustomer(orderdetail.getCustomer_id(), customer).enqueue(new Callback<Customer>() {
-                        @Override
-                        public void onResponse(Call<Customer> call, Response<Customer> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(TableDetail.this, "Cập nhật điểm khách hàng thành công!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(TableDetail.this, "Cập nhật điểm khách hàng thất bại", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Customer> call, Throwable t) {
-                            Toast.makeText(TableDetail.this, "Lỗi khi cập nhật điểm khách hàng", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Toast.makeText(TableDetail.this, "Cập nhật trạng thái đơn hàng thất bại", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(TableDetail.this, "Lỗi kết nối khi cập nhật trạng thái đơn hàng", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    private int calculatePoints(BigDecimal totalPrice) {
-        BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
-        return points.intValue();
-    }
+//    private void PaymentByCash() {
+//
+//        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+//        Order order_status = new Order();
+//        order_status.setOrder_status("yes");
+//
+//        BigDecimal totalPrice = orderdetail.getTotal_price();
+//        int points = calculatePoints(totalPrice); // Tính điểm khách hàng
+//
+//        // Cập nhật trạng thái đơn hàng
+//        updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+//        Table table = new Table();
+//        table.setTable_status("no");
+//        apiService.updateTableStatus(orderdetail.getTable_id(),table).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thành công" + orderdetail.getTable_id(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    private void PaymentByMomo() {
+//
+//        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+//        BigDecimal totalPrice = orderdetail.getTotal_price();
+//        Payment payment = new Payment();
+//        payment.setOrder_id(orderdetail.getOrder_id());
+//        payment.setTotal_price(totalPrice);
+//
+//        // Thực hiện thanh toán MoMo
+//        apiService.payment(payment).enqueue(new Callback<JsonObject>() {  // Sửa thành JsonObject để nhận kết quả trả về
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                if (response.isSuccessful()) {
+//                    // Lấy URL thanh toán từ JSON trả về
+//                    JsonObject responseBody = response.body();
+//                    String payUrl = responseBody.get("payUrl").getAsString();
+//
+//                    // Mở WebView để thanh toán
+//                    webViewPayment.setVisibility(View.VISIBLE);
+//                    webViewPayment.loadUrl(payUrl);
+//
+//                    // Cập nhật trạng thái đơn hàng sau khi thanh toán
+//                    Order order_status = new Order();
+//                    order_status.setOrder_status("yes");
+//                    int points = calculatePoints(totalPrice);
+//                    updateOrderStatus(orderdetail.getOrder_id(), order_status, points);
+//                    Table table = new Table();
+//                    table.setTable_status("no");
+//                    apiService.updateTableStatus(order_status.getTable_id(),table).enqueue(new Callback<Void>() {
+//                        @Override
+//                        public void onResponse(Call<Void> call, Response<Void> response) {
+//                            Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Void> call, Throwable t) {
+//                            Toast.makeText(TableDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(TableDetail.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(TableDetail.this, "Lỗi kết nối khi thanh toán", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    private void updateOrderStatus(int orderId, Order orderStatus, int points) {
+//        Order orderdetail = (Order) getIntent().getSerializableExtra("order");
+//        apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(TableDetail.this, "Cập nhật trạng thái đơn hàng thành công", Toast.LENGTH_SHORT).show();
+//
+//                    // Cập nhật điểm cho khách hàng
+//                    apiService.updateCustomerPoints(orderdetail.getCustomer_id(), points).enqueue(new Callback<Void>() {
+//                        @Override
+//                        public void onResponse(Call<Void> call, Response<Void> response) {
+//                            if (response.isSuccessful()) {
+//                                Toast.makeText(TableDetail.this, "Cập nhật điểm khách hàng thành công! Điểm: " + points, Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(TableDetail.this, "Cập nhật điểm khách hàng thất bại: " + response.code(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Void> call, Throwable t) {
+//                            Toast.makeText(TableDetail.this, "Lỗi kết nối khi cập nhật điểm khách hàng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(TableDetail.this, "Cập nhật trạng thái đơn hàng thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Toast.makeText(TableDetail.this, "Lỗi kết nối khi cập nhật trạng thái đơn hàng", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    private int calculatePoints(BigDecimal totalPrice) {
+//        BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
+//        return points.intValue();
+//    }
     private void loadOrder(int table_id) {
         apiService.getOrderByTableId(table_id).enqueue(new Callback<List<Order>>() {
             @Override

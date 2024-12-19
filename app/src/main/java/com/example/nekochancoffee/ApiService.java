@@ -236,7 +236,10 @@ public interface ApiService {
 
     @GET("order/details/{table_id}")
     Call<List<Order>> getOrderByTableId(@Path("table_id") int table_id);
-//Thêm order
+    @GET("order/{order_id}")
+    Call<Order> getOrderById(@Path("order_id") int order_id);
+
+    //Thêm order
     @POST("/addOrder")
     Call<AddOrder.OrderResponse> addOrder(@Body Order order);
 

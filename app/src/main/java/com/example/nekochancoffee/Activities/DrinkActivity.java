@@ -30,7 +30,7 @@ public class DrinkActivity extends AppCompatActivity {
 
     private RecyclerView  recyclerView;
     private FloatingActionButton btnAddDrink;
-    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
     private List<Drink>drinkList =new ArrayList<>();
     private DrinkAdapter adapter ;

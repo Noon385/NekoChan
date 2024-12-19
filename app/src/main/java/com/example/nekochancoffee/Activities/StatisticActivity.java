@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 public class StatisticActivity extends AppCompatActivity {
 
-    ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
     private EditText startDate, endDate;
     private Button btnFilter;
     private Spinner spinnerStatistic;
@@ -247,7 +247,7 @@ public class StatisticActivity extends AppCompatActivity {
         }
         Log.d("BestsellerData", bestsellerList.toString());
         BarDataSet dataSet = new BarDataSet(entries, "Món bán chạy");
-        dataSet.setColor(getResources().getColor(R.color.teal));
+        dataSet.setColor(getResources().getColor(R.color.red));
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.9f);
 
@@ -304,9 +304,9 @@ public class StatisticActivity extends AppCompatActivity {
 
         // Create the BarDataSet and set chart data
         BarDataSet dataSet = new BarDataSet(entries, "Mèo được ưa thích");
-        dataSet.setColor(getResources().getColor(R.color.teal));  // Set the bar color
+        dataSet.setColor(getResources().getColor(R.color.heavy_cream));  // Set the bar color
         BarData data = new BarData(dataSet);
-        data.setBarWidth(0.9f);  // Set bar width for better spacing
+        data.setBarWidth(0.9f);
 
         // Set the data to the chart
         chart.setData(data);

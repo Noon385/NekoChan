@@ -50,9 +50,9 @@ public class Option extends AppCompatActivity {
         String username = sharedPreferences.getString("username","");
         txtUsername.setText("Xin chào "+username.toString());
 
-        if (role.equals("manager")) {
+        if (role.toLowerCase().equals("manager")) {
             showManagerFeatures();
-        } else if (role.equals("staff")) {
+        } else if (role.toLowerCase().equals("staff")) {
             showStaffFeatures();
         }
 

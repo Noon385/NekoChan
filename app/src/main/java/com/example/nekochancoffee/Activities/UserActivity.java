@@ -31,7 +31,7 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnUse
     private UserAdapter userAdapter;
     private List<User> userList;
     private FloatingActionButton fabAddUser;
-    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

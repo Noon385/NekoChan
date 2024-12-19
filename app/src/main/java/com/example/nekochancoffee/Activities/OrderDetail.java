@@ -54,7 +54,7 @@ public class OrderDetail extends AppCompatActivity {
     private Drink drink;
     private List<Order> orderDetails;
 
-    private ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -187,8 +187,6 @@ public class OrderDetail extends AppCompatActivity {
     }
 
     private void PaymentByMomo() {
-
-
         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         if (orderdetail == null) {
             Toast.makeText(this, "Không có chi tiết đơn hàng ", Toast.LENGTH_SHORT).show();
@@ -220,12 +218,11 @@ public class OrderDetail extends AppCompatActivity {
 
                     Table table = new Table();
                     table.setTable_status("no");
-                    apiService.updateTableStatus(order_status.getTable_id(),table).enqueue(new Callback<Void>() {
+                    apiService.updateTableStatus(orderdetail.getTable_id(),table).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thành công", Toast.LENGTH_SHORT).show();
                         }
-
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             Toast.makeText(OrderDetail.this, "Cập nhật trạng thái bàn thất bại", Toast.LENGTH_SHORT).show();

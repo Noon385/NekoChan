@@ -31,7 +31,7 @@ public class OrderActivity extends AppCompatActivity {
     private OrderAdapter orderAdapter;
     private List<Order> orderList;
     private Drink drink;
-    ApiService apiService = RetrofitClient.getClient("https://bde3-42-119-80-131.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService = RetrofitClient.getClient("https://ea17-1-53-235-143.ngrok-free.app/").create(ApiService.class);
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,7 +45,7 @@ public class OrderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, Option.class));
+//                startActivity(new Intent(OrderActivity.this, Option.class));
                 finish();
             }
         });

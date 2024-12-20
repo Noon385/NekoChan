@@ -54,7 +54,7 @@ public class OrderDetail extends AppCompatActivity {
     private Drink drink;
     private List<Order> orderDetails;
 
-    private ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://56fc-118-69-96-226.ngrok-free.app/").create(ApiService.class);
 
 
     @Override
@@ -239,9 +239,6 @@ public class OrderDetail extends AppCompatActivity {
             }
         });
     }
-
-
-
     private void updateOrderStatus(int orderId, Order orderStatus, int points) {
         Order orderdetail = (Order) getIntent().getSerializableExtra("order");
         apiService.updateOrderStatus(orderId, orderStatus).enqueue(new Callback<Void>() {
@@ -277,25 +274,33 @@ public class OrderDetail extends AppCompatActivity {
             }
         });
     }
-
     private int calculatePoints(BigDecimal totalPrice) {
         BigDecimal points = totalPrice.divide(new BigDecimal("1000"), BigDecimal.ROUND_DOWN);
         return points.intValue();
     }
+    
     private void generatePdf(Order order) {
         // Khởi tạo PdfDocument
         PdfDocument pdfDocument = new PdfDocument();
         Paint paint = new Paint();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(600, 850, 1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
 
         Canvas canvas = page.getCanvas();
-
-        // Thiết lập nội dung hóa đơn
-        int x = 10, y = 25;
+        //ội dung
+        int x = 10, y = 50;
         paint.setTextSize(14);
 
+        paint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("CÀ PHÊ MÈO NEKOCHAN", x, y, paint);
 
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("Nhân viên: " + order.getUsername(), pageInfo.getPageWidth() - x, y, paint);
+
+
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        y += 30;
         paint.setTextSize(18);
         canvas.drawText("HÓA ĐƠN THANH TOÁN", 595 / 2 - 100, y, paint);
 

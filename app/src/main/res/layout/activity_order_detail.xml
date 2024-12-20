@@ -38,10 +38,10 @@
                 android:id="@+id/txtNekoChan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trà sữa nekochan"
+                android:text="CÀ PHÊ MÈO NEKOCHAN"
                 android:textAllCaps="true"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:textAlignment="viewStart"
                 android:layout_marginEnd="20dp" />

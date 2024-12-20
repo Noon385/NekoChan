@@ -29,7 +29,7 @@ public class AdoptActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAdopt;
     private AdoptAdapter adoptAdapter;
     private FloatingActionButton btnAddAdopt;
-    ApiService apiService  = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
+    ApiService apiService  = RetrofitClient.getClient("https://56fc-118-69-96-226.ngrok-free.app/").create(ApiService.class);
 
 
     @Override

@@ -45,7 +45,7 @@ public class AddOrder extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Drink drink;
     private final static int req =123;
-    private ApiService apiService = RetrofitClient.getClient("https://3a18-42-119-149-86.ngrok-free.app/").create(ApiService.class);
+    private ApiService apiService = RetrofitClient.getClient("https://56fc-118-69-96-226.ngrok-free.app/").create(ApiService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

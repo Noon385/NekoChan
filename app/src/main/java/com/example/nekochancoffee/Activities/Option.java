@@ -15,7 +15,7 @@ import com.example.nekochancoffee.R;
 
 public class Option extends AppCompatActivity {
 
-    private CardView cardStaff, cardCategory, cardProduct, cardCustomer, cardLogout, cardOrder,cardAdopt, cardStatistic;
+    private CardView cardStaff, cardCategory, cardProduct, cardCustomer, cardLogout, cardOrder,cardAdopt, cardExchange,cardStatistic;
     TextView txtUsername;
     private SharedPreferences sharedPreferences;
 
@@ -33,6 +33,7 @@ public class Option extends AppCompatActivity {
         cardOrder = findViewById(R.id.cardOrder);
         cardAdopt = findViewById(R.id.cardAdopt);
         cardStatistic = findViewById(R.id.cardStatistic);
+        cardExchange = findViewById(R.id.cardExchange);
         txtUsername = findViewById(R.id.txtUsername);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_option);
@@ -87,6 +88,11 @@ public class Option extends AppCompatActivity {
 
         cardStatistic.setOnClickListener(v -> {
             Intent intent = new Intent(Option.this, StatisticActivity.class);
+            startActivity(intent);
+        });
+
+        cardExchange.setOnClickListener(v -> {
+            Intent intent = new Intent(Option.this, ExchangeActivity.class);
             startActivity(intent);
         });
         cardLogout.setOnClickListener(v -> {
